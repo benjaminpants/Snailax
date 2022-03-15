@@ -60,25 +60,25 @@ if mouse_check_button(mb_right)
 }
 
 
-if (keyboard_check_pressed(vk_numpad0))
+if (keyboard_check_pressed(ord("1")))
 {
     placing = obj_wall
     placing_layer = "Walls"
 }
 
-if (keyboard_check_pressed(vk_numpad1))
+if (keyboard_check_pressed(ord("2")))
 {
     placing = obj_wallB
     placing_layer = "Walls"
 }
 
-if (keyboard_check_pressed(vk_numpad2))
+if (keyboard_check_pressed(ord("3")))
 {
     placing = obj_rusty_spike
     placing_layer = "Spikes"
 }
 
-if (keyboard_check_pressed(vk_numpad3))
+if (keyboard_check_pressed(ord("4")))
 {
     placing = obj_playerspawn
     placing_layer = "Player"
