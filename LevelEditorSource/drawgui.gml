@@ -1,0 +1,1 @@
+scr_draw_subtitle("Currently Selected Object:" + object_get_name(placing) + "\nNumpad to change objects, F1 to play", c_white)
