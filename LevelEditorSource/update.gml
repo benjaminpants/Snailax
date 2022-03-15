@@ -46,6 +46,10 @@ if mouse_check_button(mb_right)
 	{
 		instance_destroy(inst)
 		audio_play_sound(sou_respawn,0,false)
+		if (placing == obj_playerspawn)
+		{
+			audio_play_sound(sou_fail,0,false)
+		}
 	}
 	
 	//destroy the current level styler
@@ -104,8 +108,8 @@ if (keyboard_check_pressed(vk_f1))
 if (keyboard_check_pressed(vk_f2)) //handles saving files
 {
 	var file_name = get_string("Enter Level File Name (WITHOUT EXTENSION)", "my_epic_level")
-	var SaveData = "1\n" + string(get_integer("Choose squid variation.\n0=No traps will spawn\n1=Ground spike traps will spawn\n2=Wall, ceiling, and ground spike traps will spawn\n3=All spikes plus cats\n4=All spike traps, Less ceiling spikes(no cats)",1)) //file version + squid ai variation
-	
+	squid_level = get_integer("Choose squid variation.\n0=No traps will spawn\n1=Ground spike traps will spawn\n2=Wall, ceiling, and ground spike traps will spawn\n3=All spikes plus cats\n4=All spike traps, Less ceiling spikes(no cats)",1)
+	var SaveData = "1\n" + string(squid_level) //file version + squid ai variation
 	
 	SaveData = SaveData + "\n-\n"
 
@@ -269,6 +273,8 @@ if (keyboard_check_pressed(vk_f3)) //handles loading files
 	
 	
 	level_saved = true
+	
+	audio_play_sound(sou_game_start,0,false)
 
 
 
