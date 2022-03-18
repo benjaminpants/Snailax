@@ -9,10 +9,14 @@ prev_x = 0
 prev_y = 0
 level_saved = false
 cur_selected_item = 0
+cur_selected_slot = 0
 
 all_objects = [obj_wall,obj_wallB,obj_spike_permanent,obj_playerspawn, obj_conveyor_belt]
 
-current_palette = [obj_wall,obj_wallB,obj_spike_permanent,obj_playerspawn, obj_conveyor_belt] //why reference the objects instead of the index in all_objects? Incase I move things around, dont wanna mess things up
+all_objects_layers = ["Walls","Walls","Spikes","Player","Goal"] //have no idea why conveyer belts are on the goal layer but oh well
+
+current_palette = [obj_wall,obj_wallB,obj_spike_permanent,obj_playerspawn, obj_conveyor_belt, -1, -1, -1, -1] //why reference the objects instead of the index in all_objects? Incase I move things around, dont wanna mess things up
+
 
 //valid modes are:
 //main

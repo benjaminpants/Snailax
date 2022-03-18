@@ -22,6 +22,32 @@ if (cur_mode != "placing")
 			cur_selected_item = clamp(cur_selected_item + 1, 0, array_length_1d(all_objects) - 1)
 			audio_play_sound(sou_no_audiogroup_test,0,false)
 		}
+		if (keyboard_check_pressed(vk_enter))
+		{
+			cur_mode = "palette_change"
+			audio_play_sound(sou_game_start,0,false)
+		}
+	}
+	else if (cur_mode == "palette_change") //ELSE IF SO THE ENTER TRIGGER THINGY DOESNT TRIGGER AGAIN
+	{
+		if (keyboard_check_pressed(vk_left))
+		{
+			cur_selected_slot = clamp(cur_selected_slot - 1, 0, 8)
+			audio_play_sound(sou_no_audiogroup_test,0,false)
+		}
+		if (keyboard_check_pressed(vk_right))
+		{
+			cur_selected_slot = clamp(cur_selected_slot + 1, 0, 8)
+			audio_play_sound(sou_no_audiogroup_test,0,false)
+		}
+		if (keyboard_check_pressed(vk_enter))
+		{
+			audio_play_sound(sou_game_start,0,false)
+			current_palette[cur_selected_slot] = all_objects[cur_selected_item]
+			cur_selected_item = 0
+			cur_selected_slot = 0
+			cur_mode = "placing"
+		}
 	}
 	return false;
 }
@@ -58,36 +84,15 @@ if mouse_check_button(mb_right)
 }
 
 
-if (keyboard_check_pressed(ord("1")))
-{
-    placing = obj_wall
-    placing_layer = "Walls"
-}
 
-if (keyboard_check_pressed(ord("2")))
+for (var i = 0; i < 9; i++)
 {
-    placing = obj_wallB
-    placing_layer = "Walls"
+	if (keyboard_check_pressed(ord(string(i + 1))))
+	{
+		placing = current_palette[i]
+		//TODO: placing layer
+	}
 }
-
-if (keyboard_check_pressed(ord("3")))
-{
-    placing = obj_spike_permanent
-    placing_layer = "Spikes"
-}
-
-if (keyboard_check_pressed(ord("4")))
-{
-    placing = obj_playerspawn
-    placing_layer = "Player"
-}
-
-if (keyboard_check_pressed(ord("5")))
-{
-    placing = obj_conveyor_belt
-    placing_layer = "Goal"
-}
-
 
 if (keyboard_check_pressed(vk_f1))
 {

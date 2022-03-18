@@ -7,7 +7,7 @@ if (cur_mode == "placing")
 	}
 	else
 	{
-		scr_draw_subtitle("Currently Selected Object:" + object_get_name(placing) + "\n1-5 to change objects, F9 for more", c_white)
+		scr_draw_subtitle("Currently Selected Object:" + object_get_name(placing) + "\n1-9 to change objects, F9 for more", c_white)
 	}
 
 }
@@ -29,6 +29,28 @@ else
 			}
 		}
 		scr_draw_subtitle("Arrow keys to navigate, enter to select and enter palette edit mode.", c_white)
+	}
+	else if (cur_mode == "palette_change")
+	{
+		for (var i = 0; i < 9; i++)
+		{
+			if (current_palette[i] != -1)
+			{
+				var offsets = scr_getitemoffsets(current_palette[i])
+				draw_sprite_ext(object_get_sprite(current_palette[i]), 0, (i * 120) + (offsets[0] * 2), 120 + (offsets[1] * 2), 2, 2, 0, c_white, 1)
+			}
+			draw_set_font(font_aiTalk)
+			if (i == cur_selected_slot)
+			{
+				draw_set_colour(c_yellow)
+			}
+			else
+			{
+				draw_set_colour(c_white)
+			}
+			draw_text(((i + 1) * 120) - 60, 64, string(i + 1))
+			draw_set_colour(c_white)
+		}
 	}
 	
 	
