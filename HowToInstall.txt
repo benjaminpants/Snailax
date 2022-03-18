@@ -1,0 +1,6 @@
+Switch to the Sandbox branch on steam.
+
+Download FLIPS and use it to patch the file, make sure you change the allowed file formats from "most common rom types" to "any files"
+Select the original data.win then the modified version, or if you just open the patch with lunar just select the original.
+
+https://dl.smwcentral.net/11474/floating.zip

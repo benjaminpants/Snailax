@@ -1,0 +1,2 @@
+the goto room victory goes into level_basic_copy_me which is the level i use for the editor
+the one relating to the level select portal is the script I attach to the level select portal so I can spawn it manually, as spawning it via the intended method breaks save files.
