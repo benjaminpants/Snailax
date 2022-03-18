@@ -1,12 +1,14 @@
 var lay_id, a, i;
 
-x = (round((mouse_x / 60)) * 60)
-y = (round((mouse_y / 60)) * 60)
 
 //offsets because not every object has the same alignment point as the wall sprite
 var offsets = scr_getitemoffsets(placing)
 offset_x = offsets[0]
 offset_y = offsets[1]
+
+x = (round((mouse_x / grid_x)) * grid_x)
+y = (round((mouse_y / grid_y)) * grid_y)
+
 
 if (mouse_check_button(mb_left) and (x != prev_x or y != prev_y))
 {

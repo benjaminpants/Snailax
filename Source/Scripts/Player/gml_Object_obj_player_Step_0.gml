@@ -26,7 +26,14 @@ else
 lookdir_smooth = lerp(lookdir_smooth, lookdir, 0.15)
 realhspeed = (hspeed - bonus_speed_by_conveyor)
 slither_active = (vspeed == (0 * realhspeed) * 0.2)
-wind_sound_slither_volume = lerp(wind_sound_slither_volume, slither_active, 0.5)
+if (hspeed != 0)
+{
+	wind_sound_slither_volume = lerp(wind_sound_slither_volume, slither_active, 0.5)
+}
+else
+{
+	wind_sound_slither_volume = 0
+}
 audio_sound_gain_fx(wind_sound_slither, ((wind_sound_slither_volume * wind_sound_slither_volume) * 0.8), 0.016666666666666666)
 if (reading_file == -1)
 {
