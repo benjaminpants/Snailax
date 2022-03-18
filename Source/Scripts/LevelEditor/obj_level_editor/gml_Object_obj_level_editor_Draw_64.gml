@@ -1,6 +1,6 @@
 if (keyboard_check(vk_f9))
 {
-	scr_draw_subtitle("F1 to play, F2 to save, F3 to load", c_white)
+	scr_draw_subtitle("F1 to play, F2 to save, F3 to load, F2 while ingame to go back to the editor", c_white)
 }
 else
 {

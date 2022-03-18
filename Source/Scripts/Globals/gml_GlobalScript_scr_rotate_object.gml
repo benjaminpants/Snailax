@@ -2,11 +2,11 @@ var object_to_attach = argument0
 
 var use_spike_offsets = argument1
 
-if (place_meeting(object_to_attach.x,object_to_attach.y + 60,obj_wall))
+if (place_meeting(object_to_attach.x,object_to_attach.y + 30,obj_wall))
 {
 	image_angle = 0
 }
-else if (place_meeting(object_to_attach.x,object_to_attach.y - 90,obj_wall))
+else if (place_meeting(object_to_attach.x,object_to_attach.y - 30,obj_wall))
 {
 	image_angle = 180
 	if (use_spike_offsets)
