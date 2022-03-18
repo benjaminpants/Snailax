@@ -6,6 +6,26 @@ var offsets = scr_getitemoffsets(placing)
 offset_x = offsets[0]
 offset_y = offsets[1]
 
+
+if (cur_mode != "placing")
+{
+	//do non-level editing code here, mostly navigating menus!
+	if (cur_mode == "palette_select")
+	{
+		if (keyboard_check_pressed(vk_left))
+		{
+			cur_selected_item = clamp(cur_selected_item - 1, 0, array_length_1d(all_objects) - 1)
+			audio_play_sound(sou_no_audiogroup_test,0,false)
+		}
+		if (keyboard_check_pressed(vk_right))
+		{
+			cur_selected_item = clamp(cur_selected_item + 1, 0, array_length_1d(all_objects) - 1)
+			audio_play_sound(sou_no_audiogroup_test,0,false)
+		}
+	}
+	return false;
+}
+
 x = (round((mouse_x / grid_x)) * grid_x)
 y = (round((mouse_y / grid_y)) * grid_y)
 

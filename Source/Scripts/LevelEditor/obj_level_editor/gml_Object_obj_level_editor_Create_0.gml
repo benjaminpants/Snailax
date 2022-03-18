@@ -8,13 +8,18 @@ grid_y = 60
 prev_x = 0
 prev_y = 0
 level_saved = false
+cur_selected_item = 0
+
+all_objects = [obj_wall,obj_wallB,obj_spike_permanent,obj_playerspawn, obj_conveyor_belt]
+
+current_palette = [obj_wall,obj_wallB,obj_spike_permanent,obj_playerspawn, obj_conveyor_belt] //why reference the objects instead of the index in all_objects? Incase I move things around, dont wanna mess things up
 
 //valid modes are:
 //main
 //place
 //palette_select
 //palette_change
-cur_mode = "main"
+cur_mode = "palette_select"
 
 
 //squid games!!!
