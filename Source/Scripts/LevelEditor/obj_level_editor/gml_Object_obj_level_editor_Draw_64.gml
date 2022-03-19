@@ -23,11 +23,11 @@ else
 			var actual_sprite_data = scr_get_item_sprite_index(sprite_attempt)
 			if (cur_selected_item == i)
 			{
-				draw_sprite_ext(actual_sprite_data[1], actual_sprite_data[0], (((i mod 5) + 5) * 120) + (offsets[0] * 2.25), (offsets[1] * 2.25) + ((display_get_gui_height() / 2) - 90),2.25,2.25,0,c_white,1)
+				draw_sprite_ext(actual_sprite_data[1], actual_sprite_data[0], (((i mod 5) + 5) * 120) + (offsets[0] * 2.25), (offsets[1] * 2.25) + ((display_get_gui_height() / 2) - 90),2.25 * actual_sprite_data[2],2.25 * actual_sprite_data[2],0,c_white,1)
 			}
 			else
 			{
-				draw_sprite_ext(actual_sprite_data[1], actual_sprite_data[0], (((i mod 5) + 5) * 120) + (offsets[0] * 2), (offsets[1] * 2) + ((display_get_gui_height() / 2) - 60),2,2,0,c_white,1)
+				draw_sprite_ext(actual_sprite_data[1], actual_sprite_data[0], (((i mod 5) + 5) * 120) + (offsets[0] * 2), (offsets[1] * 2) + ((display_get_gui_height() / 2) - 60),2 * actual_sprite_data[2],2 * actual_sprite_data[2],0,c_white,1)
 			}
 		}
 		scr_draw_subtitle(object_get_name(all_objects[cur_selected_item]) + "\nArrow keys to navigate, enter to select.", c_white)
@@ -41,7 +41,7 @@ else
 				var sprite_attempt = object_get_sprite(global.current_palette[i])
 				var actual_sprite_data = scr_get_item_sprite_index(sprite_attempt)
 				var offsets = scr_getitemoffsets(global.current_palette[i])
-				draw_sprite_ext(actual_sprite_data[1], actual_sprite_data[0], (i * 120) + (offsets[0] * 2), 120 + (offsets[1] * 2), 2, 2, 0, c_white, 1)
+				draw_sprite_ext(actual_sprite_data[1], actual_sprite_data[0], (i * 120) + (offsets[0] * 2), 120 + (offsets[1] * 2), 2 * actual_sprite_data[2], 2 * actual_sprite_data[2], 0, c_white, 1)
 			}
 			draw_set_font(font_aiTalk)
 			if (i == cur_selected_slot)
@@ -66,7 +66,7 @@ else
 				var offsets = scr_getitemoffsets(global.current_palette[i])
 				var sprite_attempt = object_get_sprite(global.current_palette[i])
 				var actual_sprite_data = scr_get_item_sprite_index(sprite_attempt)
-				draw_sprite_ext(actual_sprite_data[1], actual_sprite_data[0], (i * 120) + (offsets[0] * 2), 120 + (offsets[1] * 2), 2, 2, 0, c_white, 1)
+				draw_sprite_ext(actual_sprite_data[1], actual_sprite_data[0], (i * 120) + (offsets[0] * 2), 120 + (offsets[1] * 2), 2 * actual_sprite_data[2], 2 * actual_sprite_data[2], 0, c_white, 1)
 			}
 			draw_set_font(font_aiTalk)
 			draw_set_colour(c_white)

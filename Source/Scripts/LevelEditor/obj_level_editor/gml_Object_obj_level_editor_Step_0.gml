@@ -162,6 +162,12 @@ if (keyboard_check_pressed(vk_f1))
 			alarm = 1
 		}
 		
+		with (obj_sh_enemy_spawnpoint_normy) //spawn the funny
+		{
+			alarm = 1
+			visible = false
+		}
+		
 		with (obj_destructable_wall) //destructable walls do pretty much nothing and sit there and be sad that you arent cool
 		{
 			alarm[1] = 1
@@ -191,6 +197,7 @@ if (keyboard_check_pressed(vk_f1))
 if (keyboard_check_pressed(vk_f2)) //handles saving files
 {
 	var file_name = get_string("Enter Level File Name (WITHOUT EXTENSION)", current_level_name)
+	current_level_name = file_name
 	if (show_question("Do you want to change squid's settings?(These default to squid doing nothing)"))
 	{
 		squid_ground_spike_probability = get_integer("Ground Spike Probability(0-100)", squid_ground_spike_probability * 100) / 100
@@ -333,6 +340,32 @@ if (keyboard_check_pressed(vk_f2)) //handles saving files
 		SaveData = SaveData + "\n"
 
 	}
+	
+	with (obj_drone_spawner)
+	{
+		
+		SaveData = SaveData + object_get_name(object_index) + ":"
+		
+		SaveData = SaveData + string(x)
+		
+		SaveData = SaveData + "," + string(y) + ","
+		
+		SaveData = SaveData + "\n"
+
+	}
+	
+	with (obj_sh_enemy_spawnpoint_normy)
+	{
+		
+		SaveData = SaveData + object_get_name(object_index) + ":"
+		
+		SaveData = SaveData + string(x)
+		
+		SaveData = SaveData + "," + string(y) + ","
+		
+		SaveData = SaveData + "\n"
+
+	}
 
 
 	var file
@@ -346,6 +379,7 @@ if (keyboard_check_pressed(vk_f2)) //handles saving files
 if (keyboard_check_pressed(vk_f3)) //handles loading files
 {
 
+	//TODO: you know I should probably just make a for loop that iterates through all valid editor objects and clear them
 	instance_destroy(obj_wall)
 	instance_destroy(obj_wallB)
 	instance_destroy(obj_playerspawn)
@@ -356,6 +390,7 @@ if (keyboard_check_pressed(vk_f3)) //handles loading files
 	instance_destroy(obj_gun)
 	instance_destroy(obj_enemy)
 	instance_destroy(obj_bubble)
+	instance_destroy(obj_drone_spawner)
 
 	var file_name = get_string("Enter Level File Name (WITHOUT EXTENSION)", "my_epic_level")
 	
@@ -481,6 +516,14 @@ if (keyboard_check_pressed(vk_f3)) //handles loading files
 		{
 			layer_to_place_on = "MiniGames"
 		}
+		else if (name == "obj_drone_spawner")
+		{
+			layer_to_place_on = "Traps"
+		}
+		else if (name == "obj_sh_enemy_spawnpoint_normy")
+		{
+			layer_to_place_on = "Spikes"
+		}
 		
 		k++
 		
@@ -511,6 +554,8 @@ if (keyboard_check_pressed(vk_f3)) //handles loading files
 		instance_create_layer(x, y, "Player", object_index)
 		instance_destroy()
 	}
+	
+	current_level_name = file_name
 	
 	level_saved = true
 	

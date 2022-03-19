@@ -13,9 +13,9 @@ cur_selected_slot = 0
 
 current_level_name = "my_epic_level"
 
-all_objects = [obj_wall,obj_wallB,obj_spike_permanent,obj_playerspawn, obj_conveyor_belt,obj_bomb_spawner,obj_sh_gun, obj_sh_gun2, obj_sh_gun3, obj_destructable_wall, obj_gun, obj_enemy, obj_bubble]
+all_objects = [obj_wall,obj_wallB,obj_spike_permanent,obj_playerspawn, obj_conveyor_belt,obj_bomb_spawner,obj_sh_gun, obj_sh_gun2, obj_sh_gun3, obj_destructable_wall, obj_explosive_wall, obj_gun, obj_enemy, obj_bubble, obj_difficulty_shower, obj_drone_spawner, obj_sh_enemy_spawnpoint_normy]
 
-all_objects_layers = ["Walls","Walls","Spikes","Player","Goal","MiniGames","Player","Player","Player", "MiniGames", "Spikes", "Traps", "MiniGames"] //have no idea why conveyer belts are on the goal layer but oh well
+all_objects_layers = ["Walls","Walls","Spikes","Player","Goal","MiniGames","Player","Player","Player", "MiniGames", "MiniGames", "Spikes", "Traps", "MiniGames", "Walls", "Traps", "Spikes"] //have no idea why conveyer belts are on the goal layer but oh well
 
 if (!variable_global_exists("current_palette"))
 {
