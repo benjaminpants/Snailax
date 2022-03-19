@@ -72,7 +72,7 @@ else
 			draw_set_colour(c_white)
 			draw_text(((i + 1) * 120) - 60, 64, string(i + 1))
 		}
-		scr_draw_subtitle("This menu is incomplete! Z to exit menu/go to place mode, X to adjust palette.", c_white)
+		scr_draw_subtitle("This menu is incomplete! Z to exit menu/go to place mode, X to adjust palette. C to adjust level size.", c_white)
 	}
 	
 	

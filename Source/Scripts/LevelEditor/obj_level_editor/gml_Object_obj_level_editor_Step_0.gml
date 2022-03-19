@@ -45,7 +45,7 @@ if (cur_mode != "placing")
 			audio_play_sound(sou_game_start,0,false)
 			global.current_palette[cur_selected_slot] = all_objects[cur_selected_item]
 			global.current_palette_layers[cur_selected_slot] = all_objects_layers [cur_selected_item]
-			cur_mode = "placing"
+			cur_mode = "main"
 		}
 	}
 	else if (cur_mode == "main")
@@ -110,87 +110,11 @@ for (var i = 0; i < 9; i++)
 if (keyboard_check_pressed(ord("Z")))
 {
 	cur_mode = "main"
-
 }
 
-if (keyboard_check_pressed(vk_f1))
+if (keyboard_check_pressed(vk_f4))
 {
-	if (not level_saved)
-	{
-		show_message("Please save your level before testing!")
-	}
-	else
-	{
-		//destroy the current level styler
-		instance_destroy(obj_levelstyler)
-		//forcefully clear all the walllines
-		lay_id = layer_get_id("WallLines")
-		a = layer_get_all_elements(lay_id)
-		for (i = 0; i < array_length_1d(a); i++)
-			layer_sprite_destroy(a[i])
-		//recreate the level styler
-		instance_create_layer(0, 0, "Player", obj_levelstyler)
-		
-		with (obj_spike_permanent)
-		{
-			scr_rotate_object(id,true)
-		}
-	
-		if (instance_exists(obj_conveyor_belt)) //properly initialize conveyer sounds
-		{
-			if (!instance_exists(obj_conveyor_belt_sound_handler))
-				instance_create_layer(0, 0, "Fx", obj_conveyor_belt_sound_handler)
-		}
-	
-		with (obj_conveyor_belt) //conveyer belts do your thing
-		{
-			alarm = 1
-		}
-		
-		with (obj_bomb_spawner) //bomb spawners do your thing
-		{
-			alarm = 1
-		}
-		
-		with (obj_sh_gun) //guns do your thing
-		{
-			alarm = 1
-		}
-		
-		with (obj_bubble) //guns do your thing
-		{
-			alarm = 1
-		}
-		
-		with (obj_sh_enemy_spawnpoint_normy) //spawn the funny
-		{
-			alarm = 1
-			visible = false
-		}
-		
-		with (obj_destructable_wall) //destructable walls do pretty much nothing and sit there and be sad that you arent cool
-		{
-			alarm[1] = 1
-		}
-		
-		instance_create_layer(obj_playerspawn.x, obj_playerspawn.y, "Player", obj_player)
-		var SQUIDGAMES = instance_create_layer(obj_playerspawn.x, obj_playerspawn.y, "Player", obj_ai_general)
-		SQUIDGAMES.setting_ground_spike_probability = squid_ground_spike_probability
-		SQUIDGAMES.setting_wall_spike_probability = squid_wall_spike_probability
-		SQUIDGAMES.setting_ceiling_spike_probability = squid_ceiling_spike_probability
-		SQUIDGAMES.setting_badball_probability = squid_badball_probability
-		SQUIDGAMES.setting_ice_spike_down_probability = squid_ice_spike_down_probability
-		SQUIDGAMES.setting_combletely_disabled = squid_combletely_disabled
-		SQUIDGAMES.setting_air_cat_probability = squid_air_cat_probability
-		SQUIDGAMES.setting_fireworks_probability = squid_fireworks_probability
-		SQUIDGAMES.setting_conveyor_belt_change_probability = squid_conveyor_belt_change_probability
-		SQUIDGAMES.setting_wall_spike_probability = squid_wall_spike_probability
-		SQUIDGAMES.setting_laser_probability = squid_laser_probability
-		instance_destroy(obj_playerspawn)
-		instance_destroy()
-	}
-
-	
+	starting_play_mode = true
 }
 
 
@@ -204,7 +128,14 @@ if (keyboard_check_pressed(vk_f2)) //handles saving files
 		squid_wall_spike_probability = get_integer("Wall Spike Probability(0-100)", squid_wall_spike_probability * 100) / 100
 		squid_ceiling_spike_probability = get_integer("Ceiling Spike Probability(0-100)", squid_ceiling_spike_probability * 100) / 100
 		squid_air_cat_probability = get_integer("Air Spike Probability(0-100)", squid_air_cat_probability * 100) / 100
-		squid_badball_probability = get_integer("Bullet Probability(0-1000)", squid_badball_probability * 1000) / 1000
+		if (instance_exists("obj_gun"))
+		{
+			squid_badball_probability = get_integer("Bullet Probability(0-1000)", squid_badball_probability * 1000) / 1000
+		}
+		else
+		{
+			squid_badball_probability = 0
+		}
 		squid_fireworks_probability = get_integer("Firework Probability(0-100)", squid_fireworks_probability * 100) / 100
 		squid_conveyor_belt_change_probability = get_integer("Conveyer Belt Change Probability(0-100)", squid_conveyor_belt_change_probability * 100) / 100
 		squid_laser_probability = get_integer("Laser Probablity(0-100)", squid_laser_probability * 100) / 100
@@ -366,6 +297,19 @@ if (keyboard_check_pressed(vk_f2)) //handles saving files
 		SaveData = SaveData + "\n"
 
 	}
+	
+	with (obj_exploration_point)
+	{
+		
+		SaveData = SaveData + object_get_name(object_index) + ":"
+		
+		SaveData = SaveData + string(x)
+		
+		SaveData = SaveData + "," + string(y) + ","
+		
+		SaveData = SaveData + "\n"
+
+	}
 
 
 	var file
@@ -376,7 +320,7 @@ if (keyboard_check_pressed(vk_f2)) //handles saving files
 	level_saved = true
 }
 
-if (keyboard_check_pressed(vk_f3)) //handles loading files
+if (keyboard_check_pressed(vk_f3) or starting_play_mode or (global.last_loaded_c_level != "")) //handles loading files
 {
 
 	//TODO: you know I should probably just make a for loop that iterates through all valid editor objects and clear them
@@ -391,8 +335,19 @@ if (keyboard_check_pressed(vk_f3)) //handles loading files
 	instance_destroy(obj_enemy)
 	instance_destroy(obj_bubble)
 	instance_destroy(obj_drone_spawner)
+	instance_destroy(obj_exploration_point)
 
-	var file_name = get_string("Enter Level File Name (WITHOUT EXTENSION)", "my_epic_level")
+
+	var file_name = ""
+	
+	if (global.last_loaded_c_level == "")
+	{
+		file_name = get_string("Enter Level File Name (WITHOUT EXTENSION)", "my_epic_level")
+	}
+	else
+	{
+		file_name = global.last_loaded_c_level
+	}
 	
 	var header_data = []
 	
@@ -524,6 +479,10 @@ if (keyboard_check_pressed(vk_f3)) //handles loading files
 		{
 			layer_to_place_on = "Spikes"
 		}
+		else if (name == "obj_exploration_point")
+		{
+			layer_to_place_on = "Goal"
+		}
 		
 		k++
 		
@@ -559,9 +518,106 @@ if (keyboard_check_pressed(vk_f3)) //handles loading files
 	
 	level_saved = true
 	
-	audio_play_sound(sou_game_start,0,false)
+	if (global.last_loaded_c_level == "")
+	{
+		audio_play_sound(sou_game_start,0,false)
+	}
+	global.last_loaded_c_level = ""
+
 
 
 
 }
 
+if (keyboard_check_pressed(vk_f1) or starting_play_mode)
+{
+	if (not level_saved)
+	{
+		show_message("Please save your level before testing!")
+	}
+	else
+	{
+		//destroy the current level styler
+		instance_destroy(obj_levelstyler)
+		//forcefully clear all the walllines
+		lay_id = layer_get_id("WallLines")
+		a = layer_get_all_elements(lay_id)
+		for (i = 0; i < array_length_1d(a); i++)
+			layer_sprite_destroy(a[i])
+		//recreate the level styler
+		instance_create_layer(0, 0, "Player", obj_levelstyler)
+		
+		global.last_loaded_c_level = current_level_name
+		
+		with (obj_spike_permanent)
+		{
+			scr_rotate_object(id,true)
+		}
+	
+		if (instance_exists(obj_conveyor_belt)) //properly initialize conveyer sounds
+		{
+			if (!instance_exists(obj_conveyor_belt_sound_handler))
+				instance_create_layer(0, 0, "Fx", obj_conveyor_belt_sound_handler)
+		}
+	
+		with (obj_conveyor_belt) //conveyer belts do your thing
+		{
+			alarm = 1
+		}
+		
+		with (obj_bomb_spawner) //bomb spawners do your thing
+		{
+			alarm = 1
+		}
+		
+		with (obj_sh_gun) //guns do your thing
+		{
+			alarm = 1
+		}
+		
+		with (obj_bubble) //guns do your thing
+		{
+			alarm = 1
+		}
+		
+		with (obj_exploration_point)
+		{
+			alarm = 1
+		}
+		
+		with (obj_sh_enemy_spawnpoint_normy) //spawn the funny
+		{
+			alarm = 1
+			visible = false
+		}
+		
+		with (obj_destructable_wall) //destructable walls do pretty much nothing and sit there and be sad that you arent cool
+		{
+			alarm[1] = 1
+		}
+		
+		with (obj_explosive_wall) //destructable walls do pretty much nothing and sit there and be sad that you arent cool
+		{
+			alarm[1] = 1
+		}
+		
+		instance_create_layer(obj_playerspawn.x, obj_playerspawn.y, "Player", obj_player)
+		var SQUIDGAMES = instance_create_layer(obj_playerspawn.x, obj_playerspawn.y, "Player", obj_ai_general)
+		SQUIDGAMES.setting_ground_spike_probability = squid_ground_spike_probability
+		SQUIDGAMES.setting_wall_spike_probability = squid_wall_spike_probability
+		SQUIDGAMES.setting_ceiling_spike_probability = squid_ceiling_spike_probability
+		SQUIDGAMES.setting_badball_probability = squid_badball_probability
+		SQUIDGAMES.setting_ice_spike_down_probability = squid_ice_spike_down_probability
+		SQUIDGAMES.setting_combletely_disabled = squid_combletely_disabled
+		SQUIDGAMES.setting_air_cat_probability = squid_air_cat_probability
+		SQUIDGAMES.setting_fireworks_probability = squid_fireworks_probability
+		SQUIDGAMES.setting_conveyor_belt_change_probability = squid_conveyor_belt_change_probability
+		SQUIDGAMES.setting_wall_spike_probability = squid_wall_spike_probability
+		SQUIDGAMES.setting_laser_probability = squid_laser_probability
+		instance_destroy(obj_playerspawn)
+		starting_play_mode = false
+		instance_destroy()
+	}
+
+	
+}

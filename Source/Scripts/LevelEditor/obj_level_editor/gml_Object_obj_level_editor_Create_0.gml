@@ -10,12 +10,15 @@ prev_y = 0
 level_saved = false
 cur_selected_item = 0
 cur_selected_slot = 0
+room_mult_x = 1
+room_mult_y = 1
+starting_play_mode = false
 
 current_level_name = "my_epic_level"
 
-all_objects = [obj_wall,obj_wallB,obj_spike_permanent,obj_playerspawn, obj_conveyor_belt,obj_bomb_spawner,obj_sh_gun, obj_sh_gun2, obj_sh_gun3, obj_destructable_wall, obj_explosive_wall, obj_gun, obj_enemy, obj_bubble, obj_difficulty_shower, obj_drone_spawner, obj_sh_enemy_spawnpoint_normy]
+all_objects = [obj_wall,obj_wallB,obj_spike_permanent,obj_playerspawn, obj_conveyor_belt,obj_bomb_spawner,obj_sh_gun, obj_sh_gun2, obj_sh_gun3, obj_destructable_wall, obj_explosive_wall, obj_gun, obj_enemy, obj_bubble, obj_difficulty_shower, obj_drone_spawner, obj_sh_enemy_spawnpoint_normy, obj_exploration_point]
 
-all_objects_layers = ["Walls","Walls","Spikes","Player","Goal","MiniGames","Player","Player","Player", "MiniGames", "MiniGames", "Spikes", "Traps", "MiniGames", "Walls", "Traps", "Spikes"] //have no idea why conveyer belts are on the goal layer but oh well
+all_objects_layers = ["Walls","Walls","Spikes","Player","Goal","MiniGames","Player","Player","Player", "MiniGames", "MiniGames", "Spikes", "Traps", "MiniGames", "Walls", "Traps", "Spikes", "Goal"] //have no idea why conveyer belts are on the goal layer but oh well
 
 if (!variable_global_exists("current_palette"))
 {
@@ -24,6 +27,12 @@ if (!variable_global_exists("current_palette"))
 
 	global.current_palette_layers = ["Walls","Walls","Spikes","Player","Goal","MiniGames","Player","MiniGames","Spikes"]
 
+}
+
+
+if (!variable_global_exists("last_loaded_c_level"))
+{
+	global.last_loaded_c_level = ""
 }
 
 //valid modes are:
