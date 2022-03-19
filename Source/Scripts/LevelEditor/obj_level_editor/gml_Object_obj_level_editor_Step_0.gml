@@ -43,10 +43,20 @@ if (cur_mode != "placing")
 		if (keyboard_check_pressed(vk_enter))
 		{
 			audio_play_sound(sou_game_start,0,false)
-			current_palette[cur_selected_slot] = all_objects[cur_selected_item]
-			cur_selected_item = 0
-			cur_selected_slot = 0
+			global.current_palette[cur_selected_slot] = all_objects[cur_selected_item]
+			global.current_palette_layers[cur_selected_slot] = all_objects_layers [cur_selected_item]
 			cur_mode = "placing"
+		}
+	}
+	else if (cur_mode == "main")
+	{
+		if (keyboard_check_pressed(ord("Z")))
+		{
+			cur_mode = "placing"
+		}
+		if (keyboard_check_pressed(ord("X")))
+		{
+			cur_mode = "palette_select"
 		}
 	}
 	return false;
@@ -89,9 +99,18 @@ for (var i = 0; i < 9; i++)
 {
 	if (keyboard_check_pressed(ord(string(i + 1))))
 	{
-		placing = current_palette[i]
-		//TODO: placing layer
+		if (global.current_palette[i] != -1)
+		{
+			placing = global.current_palette[i]
+			placing_layer = global.current_palette_layers[i]
+		}
 	}
+}
+
+if (keyboard_check_pressed(ord("Z")))
+{
+	cur_mode = "main"
+
 }
 
 if (keyboard_check_pressed(vk_f1))
@@ -128,6 +147,26 @@ if (keyboard_check_pressed(vk_f1))
 			alarm = 1
 		}
 		
+		with (obj_bomb_spawner) //bomb spawners do your thing
+		{
+			alarm = 1
+		}
+		
+		with (obj_sh_gun) //guns do your thing
+		{
+			alarm = 1
+		}
+		
+		with (obj_bubble) //guns do your thing
+		{
+			alarm = 1
+		}
+		
+		with (obj_destructable_wall) //destructable walls do pretty much nothing and sit there and be sad that you arent cool
+		{
+			alarm[1] = 1
+		}
+		
 		instance_create_layer(obj_playerspawn.x, obj_playerspawn.y, "Player", obj_player)
 		var SQUIDGAMES = instance_create_layer(obj_playerspawn.x, obj_playerspawn.y, "Player", obj_ai_general)
 		SQUIDGAMES.setting_ground_spike_probability = squid_ground_spike_probability
@@ -151,16 +190,17 @@ if (keyboard_check_pressed(vk_f1))
 
 if (keyboard_check_pressed(vk_f2)) //handles saving files
 {
-	var file_name = get_string("Enter Level File Name (WITHOUT EXTENSION)", "my_epic_level")
+	var file_name = get_string("Enter Level File Name (WITHOUT EXTENSION)", current_level_name)
 	if (show_question("Do you want to change squid's settings?(These default to squid doing nothing)"))
 	{
-		squid_ground_spike_probability = get_integer("Ground Spike Probability(1-100)", squid_ground_spike_probability * 100) / 100
-		squid_wall_spike_probability = get_integer("Wall Spike Probability(1-100)", squid_wall_spike_probability * 100) / 100
-		squid_ceiling_spike_probability = get_integer("Ceiling Spike Probability(1-100)", squid_ceiling_spike_probability * 100) / 100
-		squid_air_cat_probability = get_integer("Air Spike Probability(1-100)", squid_air_cat_probability * 100) / 100
-		squid_fireworks_probability = get_integer("Firework Probability(1-100)", squid_fireworks_probability * 100) / 100
-		squid_conveyor_belt_change_probability = get_integer("Conveyer Belt Change Probability(1-100)", squid_conveyor_belt_change_probability * 100) / 100
-		squid_laser_probability = get_integer("Laser Probablity(1-100)", squid_laser_probability * 100) / 100
+		squid_ground_spike_probability = get_integer("Ground Spike Probability(0-100)", squid_ground_spike_probability * 100) / 100
+		squid_wall_spike_probability = get_integer("Wall Spike Probability(0-100)", squid_wall_spike_probability * 100) / 100
+		squid_ceiling_spike_probability = get_integer("Ceiling Spike Probability(0-100)", squid_ceiling_spike_probability * 100) / 100
+		squid_air_cat_probability = get_integer("Air Spike Probability(0-100)", squid_air_cat_probability * 100) / 100
+		squid_badball_probability = get_integer("Bullet Probability(0-1000)", squid_badball_probability * 1000) / 1000
+		squid_fireworks_probability = get_integer("Firework Probability(0-100)", squid_fireworks_probability * 100) / 100
+		squid_conveyor_belt_change_probability = get_integer("Conveyer Belt Change Probability(0-100)", squid_conveyor_belt_change_probability * 100) / 100
+		squid_laser_probability = get_integer("Laser Probablity(0-100)", squid_laser_probability * 100) / 100
 	}
 	var SaveData = "2\n" //file version + squid ai variation
 	
@@ -228,6 +268,71 @@ if (keyboard_check_pressed(vk_f2)) //handles saving files
 		SaveData = SaveData + "\n"
 
 	}
+	
+	with (obj_bomb_spawner)
+	{
+		
+		SaveData = SaveData + object_get_name(object_index) + ":"
+		
+		SaveData = SaveData + string(x)
+		
+		SaveData = SaveData + "," + string(y) + ","
+		
+		SaveData = SaveData + "\n"
+
+	}
+	
+	with (obj_sh_gun)
+	{
+		
+		SaveData = SaveData + object_get_name(object_index) + ":"
+		
+		SaveData = SaveData + string(x)
+		
+		SaveData = SaveData + "," + string(y) + ","
+		
+		SaveData = SaveData + "\n"
+
+	}
+	
+	with (obj_gun)
+	{
+		
+		SaveData = SaveData + object_get_name(object_index) + ":"
+		
+		SaveData = SaveData + string(x)
+		
+		SaveData = SaveData + "," + string(y) + ","
+		
+		SaveData = SaveData + "\n"
+
+	}
+	
+	with (obj_enemy)
+	{
+		
+		SaveData = SaveData + object_get_name(object_index) + ":"
+		
+		SaveData = SaveData + string(x)
+		
+		SaveData = SaveData + "," + string(y) + ","
+		
+		SaveData = SaveData + "\n"
+
+	}
+	
+	with (obj_bubble)
+	{
+		
+		SaveData = SaveData + object_get_name(object_index) + ":"
+		
+		SaveData = SaveData + string(x)
+		
+		SaveData = SaveData + "," + string(y) + ","
+		
+		SaveData = SaveData + "\n"
+
+	}
 
 
 	var file
@@ -246,6 +351,11 @@ if (keyboard_check_pressed(vk_f3)) //handles loading files
 	instance_destroy(obj_playerspawn)
 	instance_destroy(obj_spike_permanent)
 	instance_destroy(obj_conveyor_belt)
+	instance_destroy(obj_bomb_spawner)
+	instance_destroy(obj_sh_gun)
+	instance_destroy(obj_gun)
+	instance_destroy(obj_enemy)
+	instance_destroy(obj_bubble)
 
 	var file_name = get_string("Enter Level File Name (WITHOUT EXTENSION)", "my_epic_level")
 	
@@ -343,6 +453,34 @@ if (keyboard_check_pressed(vk_f3)) //handles loading files
 			name = "obj_spike_permanent"
 			layer_to_place_on = "Spikes"
 		}
+		else if (name == "obj_conveyor_belt")
+		{
+			layer_to_place_on = "Goal"
+		}
+		else if (name == "obj_bomb_spawner")
+		{
+			layer_to_place_on = "MiniGames"
+		}
+		else if (name == "obj_sh_gun")
+		{
+			layer_to_place_on = "Player"
+		}
+		else if (name == "obj_destructable_wall")
+		{
+			layer_to_place_on = "MiniGames"
+		}
+		else if (name == "obj_gun")
+		{
+			layer_to_place_on = "Spikes"
+		}
+		else if (name == "obj_enemy")
+		{
+			layer_to_place_on = "Traps"
+		}
+		else if (name == "obj_bubble")
+		{
+			layer_to_place_on = "MiniGames"
+		}
 		
 		k++
 		
@@ -368,6 +506,11 @@ if (keyboard_check_pressed(vk_f3)) //handles loading files
 		
 	}
 	
+	with (obj_sh_gun) //THIS IS AWFUL BUT IT WORKS SO I COULD CARE LESS
+	{
+		instance_create_layer(x, y, "Player", object_index)
+		instance_destroy()
+	}
 	
 	level_saved = true
 	
@@ -376,3 +519,4 @@ if (keyboard_check_pressed(vk_f3)) //handles loading files
 
 
 }
+

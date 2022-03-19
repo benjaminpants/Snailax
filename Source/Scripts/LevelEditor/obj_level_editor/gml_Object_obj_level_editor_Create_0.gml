@@ -11,19 +11,27 @@ level_saved = false
 cur_selected_item = 0
 cur_selected_slot = 0
 
-all_objects = [obj_wall,obj_wallB,obj_spike_permanent,obj_playerspawn, obj_conveyor_belt]
+current_level_name = "my_epic_level"
 
-all_objects_layers = ["Walls","Walls","Spikes","Player","Goal"] //have no idea why conveyer belts are on the goal layer but oh well
+all_objects = [obj_wall,obj_wallB,obj_spike_permanent,obj_playerspawn, obj_conveyor_belt,obj_bomb_spawner,obj_sh_gun, obj_sh_gun2, obj_sh_gun3, obj_destructable_wall, obj_gun, obj_enemy, obj_bubble]
 
-current_palette = [obj_wall,obj_wallB,obj_spike_permanent,obj_playerspawn, obj_conveyor_belt, -1, -1, -1, -1] //why reference the objects instead of the index in all_objects? Incase I move things around, dont wanna mess things up
+all_objects_layers = ["Walls","Walls","Spikes","Player","Goal","MiniGames","Player","Player","Player", "MiniGames", "Spikes", "Traps", "MiniGames"] //have no idea why conveyer belts are on the goal layer but oh well
 
+if (!variable_global_exists("current_palette"))
+{
+
+	global.current_palette = [obj_wall,obj_wallB,obj_spike_permanent,obj_playerspawn, obj_conveyor_belt, obj_bomb_spawner, obj_sh_gun, obj_destructable_wall, obj_gun] //why reference the objects instead of the index in all_objects? Incase I move things around, dont wanna mess things up
+
+	global.current_palette_layers = ["Walls","Walls","Spikes","Player","Goal","MiniGames","Player","MiniGames","Spikes"]
+
+}
 
 //valid modes are:
 //main
-//place
+//placing
 //palette_select
 //palette_change
-cur_mode = "palette_select"
+cur_mode = "placing"
 
 
 //squid games!!!
