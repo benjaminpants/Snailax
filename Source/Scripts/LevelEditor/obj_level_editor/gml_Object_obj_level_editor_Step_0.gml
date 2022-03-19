@@ -166,7 +166,7 @@ if (keyboard_check_pressed(vk_f2)) //handles saving files
 		squid_wall_spike_probability = get_integer("Wall Spike Probability(0-100)", squid_wall_spike_probability * 100) / 100
 		squid_ceiling_spike_probability = get_integer("Ceiling Spike Probability(0-100)", squid_ceiling_spike_probability * 100) / 100
 		squid_air_cat_probability = get_integer("Air Spike Probability(0-100)", squid_air_cat_probability * 100) / 100
-		if (instance_exists("obj_gun"))
+		if (instance_exists(obj_gun))
 		{
 			squid_badball_probability = get_integer("Bullet Probability(0-1000)", squid_badball_probability * 1000) / 1000
 		}
