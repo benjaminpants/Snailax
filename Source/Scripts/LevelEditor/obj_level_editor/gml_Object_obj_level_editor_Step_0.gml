@@ -58,12 +58,50 @@ if (cur_mode != "placing")
 		{
 			cur_mode = "palette_select"
 		}
+		if (keyboard_check_pressed(ord("C")))
+		{
+			room_mult_x = get_integer("Room Size Horizontal(In screens, divided by 100)\n100 = 1 screen\n125 = 1.25 screens\n200 = 2 screens",room_mult_x * 100) / 100
+			room_mult_y = get_integer("Room Size Vertical(In screens, divided by 100)\n100 = 1 screen\n125 = 1.25 screens\n200 = 2 screens",room_mult_y * 100) / 100
+			if (room_mult_x < 1)
+			{
+				show_message("Horizontal Size can't be less then 1!")
+				room_mult_x = 1
+			}
+			if (room_mult_y < 1)
+			{
+				show_message("Vertical Size can't be less then 1!")
+				room_mult_y = 1
+			}
+			room_width = 1920 * room_mult_x
+			room_height = 1080 * room_mult_y
+		}
 	}
 	return false;
 }
 
 x = (round((mouse_x / grid_x)) * grid_x)
 y = (round((mouse_y / grid_y)) * grid_y)
+
+camera_set_view_pos(view_camera[0],cam_x,cam_y)
+
+if (keyboard_check(ord("W")))
+{
+	cam_y -= 5
+}
+if (keyboard_check(ord("S")))
+{
+	cam_y += 5
+}
+if (keyboard_check(ord("A")))
+{
+	cam_x -= 5
+}
+if (keyboard_check(ord("D")))
+{
+	cam_x += 5
+}
+cam_x = clamp(cam_x,0,room_width - 1920)
+cam_y = clamp(cam_y,0,room_height - 1080)
 
 
 if (mouse_check_button(mb_left) and (x != prev_x or y != prev_y))
@@ -140,7 +178,7 @@ if (keyboard_check_pressed(vk_f2)) //handles saving files
 		squid_conveyor_belt_change_probability = get_integer("Conveyer Belt Change Probability(0-100)", squid_conveyor_belt_change_probability * 100) / 100
 		squid_laser_probability = get_integer("Laser Probablity(0-100)", squid_laser_probability * 100) / 100
 	}
-	var SaveData = "2\n" //file version + squid ai variation
+	var SaveData = "3\n" //file version + squid ai variation
 	
 	SaveData = SaveData + string(squid_ground_spike_probability) + "\n"
 	SaveData = SaveData + string(squid_wall_spike_probability) + "\n"
@@ -151,7 +189,10 @@ if (keyboard_check_pressed(vk_f2)) //handles saving files
 	SaveData = SaveData + string(squid_ice_spike_down_probability) + "\n" //not implemented
 	SaveData = SaveData + string(squid_fireworks_probability) + "\n"
 	SaveData = SaveData + string(squid_conveyor_belt_change_probability) + "\n"
-	SaveData = SaveData + string(squid_laser_probability)
+	SaveData = SaveData + string(squid_laser_probability) + "\n"
+	
+	SaveData = SaveData + string(room_mult_x) + "\n"
+	SaveData = SaveData + string(room_mult_y)
 	
 	SaveData = SaveData + "\n-\n"
 
@@ -349,14 +390,30 @@ if (keyboard_check_pressed(vk_f3) or starting_play_mode or (global.last_loaded_c
 		file_name = global.last_loaded_c_level
 	}
 	
+	
+	
 	var header_data = []
 	
 	var level_data = []
 	
 	var has_passed_header = false
 	
+	var file_path = program_directory + "/snailax_levels/" + file_name + ".wysld"
+	
+	if (not file_exists(file_path))
+	{
+		show_message("Please retype the level name. The one provided isn't valid.")
+		global.last_loaded_c_level = ""
+		starting_play_mode = false
+		return false;
+	}
+	
+	cam_x = 0
+	cam_y = 0
+	
+	
 	var file
-	file = file_text_open_read(program_directory + "/snailax_levels/" + file_name + ".wysld")
+	file = file_text_open_read(file_path)
 	var i = 0
 	while (!file_text_eof(file))
 	{
@@ -411,7 +468,20 @@ if (keyboard_check_pressed(vk_f3) or starting_play_mode or (global.last_loaded_c
 		squid_fireworks_probability = real(header_data[8])
 		squid_conveyor_belt_change_probability = real(header_data[9])
 		squid_laser_probability = real(header_data[10])
+		if (level_version == 2)
+		{
+			room_mult_x = 1
+			room_mult_y = 1
+		}
+		else
+		{
+			room_mult_x = real(header_data[11])
+			room_mult_y = real(header_data[12])
+		}
 	}
+	
+	room_width = 1920 * room_mult_x
+	room_height = 1080 * room_mult_y
 	
 	//squid_level = real(header_data[1]) //SQUID GAMES?
 	

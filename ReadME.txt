@@ -1,1 +1,0 @@
-You can find the level editor in the place you learn how to do the glitch (at the end of the level select path)

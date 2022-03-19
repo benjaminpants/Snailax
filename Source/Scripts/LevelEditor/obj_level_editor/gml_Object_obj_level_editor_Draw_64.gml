@@ -3,7 +3,7 @@ if (cur_mode == "placing")
 
 	if (keyboard_check(vk_f9))
 	{
-		scr_draw_subtitle("F1 to play, F2 to save, F3 to load, F2 ingame returns you to the editor", c_white)
+		scr_draw_subtitle("F1 to play, F2 to save, F3 to load, F4 quick play, F2 ingame returns you to the editor", c_white)
 	}
 	else
 	{

@@ -4,3 +4,5 @@ Download FLIPS and use it to patch the file, make sure you change the allowed fi
 Select the original data.win then the modified version, or if you just open the patch with lunar just select the original.
 
 https://dl.smwcentral.net/11474/floating.zip
+
+Is this text file stupid? Try the official tutorial: https://www.youtube.com/watch?v=06KAi3XVJmM

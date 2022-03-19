@@ -1,0 +1,22 @@
+You can find the level editor in the place you learn how to do the glitch (at the end of the level select path)
+
+
+Left Click to place
+Right Click to destroy(only works with whatever you have selected)
+
+1-9 to switch between the objects in your palette
+
+Z to open the menu
+
+With the menu opened, pressing Z closes it again, while pressing X allows you to change the items on your palette
+
+With the palette changer menu open, arrow keys to scroll through the items and enter to choose the one you want.
+
+Then you choose a slot, same controls as choosing an item.
+
+C with the menu open to change the size of your level.
+
+F1 to play the level
+F2 to save the level
+F3 to load a level
+F4 to quick play a level.
