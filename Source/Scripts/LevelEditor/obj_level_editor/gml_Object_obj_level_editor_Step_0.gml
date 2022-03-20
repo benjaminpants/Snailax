@@ -455,6 +455,7 @@ if (keyboard_check_pressed(vk_f3) or starting_play_mode or (global.last_loaded_c
 		squid_conveyor_belt_change_probability = 0.01
 		squid_laser_probability = 0
 		show_message("This level is file format v1! Beware that unless you resave Squid won't do anything!")
+		level_version = 2
 	}
 	else
 	{
@@ -472,6 +473,7 @@ if (keyboard_check_pressed(vk_f3) or starting_play_mode or (global.last_loaded_c
 		{
 			room_mult_x = 1
 			room_mult_y = 1
+			level_version = 3
 		}
 		else
 		{
@@ -594,7 +596,7 @@ if (keyboard_check_pressed(vk_f3) or starting_play_mode or (global.last_loaded_c
 	}
 	global.last_loaded_c_level = ""
 
-
+	file_text_close(file)
 
 
 }
