@@ -64,12 +64,12 @@ if (cur_mode != "placing")
 			room_mult_y = get_integer("Room Size Vertical(In screens, divided by 100)\n100 = 1 screen\n125 = 1.25 screens\n200 = 2 screens",room_mult_y * 100) / 100
 			if (room_mult_x < 1)
 			{
-				show_message("Horizontal Size can't be less then 1!")
+				show_message("Horizontal Size can't be less then 1 screen!")
 				room_mult_x = 1
 			}
 			if (room_mult_y < 1)
 			{
-				show_message("Vertical Size can't be less then 1!")
+				show_message("Vertical Size can't be less then 1 screen!")
 				room_mult_y = 1
 			}
 			room_width = 1920 * room_mult_x
