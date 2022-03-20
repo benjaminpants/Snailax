@@ -1,8 +1,38 @@
-Switch to the Sandbox branch on steam.
+Snailax is a game modifier that only adds a Level Editor currently.
 
+--Installations & Links--
+FLIPS download - https://dl.smwcentral.net/11474/floating.zip
+Github Snailax Download - https://github.com/benjaminpants/Snailax/
+Youtube Tutorial if you're confused -  https://www.youtube.com/watch?v=06KAi3XVJmM
+
+--How To Install (Step-by-step)--
+1. Have Will You Snail on steam.
+2. Rightclick Will You Snail on the left sidebar of your steam library.
+3. Click Properties...
+4. Go to betas and click the dropdown, select sandbox.
+5. Go to Local Files and press verify integrity of game files.
+6. Download FLIPS using the link provided in this .txt file.
+7. Open FLIPS Once you've unzipped it.
+8. Press Apply Patch, and switch files from "Supported ROMS" to "All Files"
+9. In that menu, go to the snailax folder, and select snailax.bps.
+10. Once you've done that, another menu will appear.
+11. Go to C:\Program Files (x86)\Steam\steamapps\common\Will You Snail
+12. Select data.win, press apply, and then press apply again.
+13. Go back to C:\Program Files (x86)\Steam\steamapps\common\Will You Snail in your regular file manager.
+14. Rename data.win to anything, recommended naming it something such as "backup.win"
+15. Rename Snailax.win to data.win
+16. You've installed snailax successfully.
+
+--Archive--
+Here's the old HowToInstall.txt if you need to read it.
+Switch to the Sandbox branch on steam.
+--
 Download FLIPS and use it to patch the file, make sure you change the allowed file formats from "most common rom types" to "any files"
 Select the original data.win then the modified version, or if you just open the patch with lunar just select the original.
 
 https://dl.smwcentral.net/11474/floating.zip
 
 Is this text file stupid? Try the official tutorial: https://www.youtube.com/watch?v=06KAi3XVJmM
+--
+
+
