@@ -16,6 +16,8 @@ Then you choose a slot, same controls as choosing an item.
 
 C with the menu open to change the size of your level.
 
+
+
 F1 to play the level
 F2 to save the level
 F3 to load a level
