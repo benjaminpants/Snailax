@@ -74,6 +74,8 @@ if (cur_mode != "placing")
 			}
 			room_width = 1920 * room_mult_x
 			room_height = 1080 * room_mult_y
+			scr_colgrid_destroy()
+			scr_colgrid_fill()
 		}
 	}
 	return false;
@@ -381,6 +383,8 @@ if (keyboard_check_pressed(vk_f3) or starting_play_mode or (global.last_loaded_c
 	
 	room_width = 1920 * room_mult_x
 	room_height = 1080 * room_mult_y
+	scr_colgrid_destroy()
+	scr_colgrid_fill()
 	
 	//squid_level = real(header_data[1]) //SQUID GAMES?
 	
