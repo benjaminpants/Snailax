@@ -1,6 +1,12 @@
 if (cur_mode == "placing")
 {
-
+	draw_set_font(font_aiTalk)
+	draw_set_colour(c_white)
+	if (placing == obj_squasher)
+	{
+		draw_set_halign(fa_left)
+		draw_text(0,64,"This object supports rotation. Press E to rotate.\nRotation:" + string(placing_rotation))
+	}
 	if (keyboard_check(vk_f9))
 	{
 		scr_draw_subtitle("F1 to play, F2 to save, F3 to load, F4 quick play, F2 ingame returns you to the editor", c_white)
@@ -30,7 +36,7 @@ else
 				draw_sprite_ext(actual_sprite_data[1], actual_sprite_data[0], (((i mod 5) + 5) * 120) + (offsets[0] * 2), (offsets[1] * 2) + ((display_get_gui_height() / 2) - 60),2 * actual_sprite_data[2],2 * actual_sprite_data[2],0,c_white,1)
 			}
 		}
-		scr_draw_subtitle(object_get_name(all_objects[cur_selected_item]) + "\nArrow keys to navigate, enter to select.", c_white)
+		scr_draw_subtitle(all_objects_name[cur_selected_item] + "\nArrow keys to navigate, enter to select.", c_white)
 	}
 	else if (cur_mode == "palette_change")
 	{
@@ -55,7 +61,7 @@ else
 			draw_text(((i + 1) * 120) - 60, 64, string(i + 1))
 			draw_set_colour(c_white)
 		}
-		scr_draw_subtitle("Arrow keys to navigate, select a slot to insert " + object_get_name(all_objects[cur_selected_item]) + " into the palette.", c_white)
+		scr_draw_subtitle("Arrow keys to navigate, select a slot to insert " + all_objects_name[cur_selected_item] + " into the palette.", c_white)
 	}
 	else if (cur_mode == "main")
 	{

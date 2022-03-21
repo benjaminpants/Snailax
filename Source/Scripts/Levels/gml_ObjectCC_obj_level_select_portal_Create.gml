@@ -12,3 +12,8 @@ more_to_explore = false
 is_boss = false
 exploration_points_collected = []
 locked_level = false
+if (global.save_pump_is_inverted)
+{
+	name = "Nice Try, but no."
+	locked_level = true
+}

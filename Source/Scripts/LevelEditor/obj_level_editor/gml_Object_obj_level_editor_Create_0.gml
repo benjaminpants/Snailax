@@ -17,14 +17,16 @@ starting_play_mode = false
 cam_x = 0
 cam_y = 0
 
-
+placing_rotation = 0
 
 
 current_level_name = "my_epic_level"
 
-all_objects = [obj_wall,obj_wallB,obj_spike_permanent,obj_playerspawn, obj_conveyor_belt,obj_bomb_spawner,obj_sh_gun, obj_sh_gun2, obj_sh_gun3, obj_destructable_wall, obj_explosive_wall, obj_gun, obj_enemy, obj_bubble, obj_difficulty_shower, obj_drone_spawner, obj_sh_enemy_spawnpoint_normy, obj_exploration_point, obj_wall_walkthrough]
+all_objects = [obj_wall,obj_wallB,obj_spike_permanent,obj_playerspawn, obj_conveyor_belt,obj_bomb_spawner,obj_sh_gun, obj_sh_gun2, obj_sh_gun3, obj_destructable_wall, obj_explosive_wall, obj_gun, obj_enemy, obj_bubble, obj_difficulty_shower, obj_drone_spawner, obj_sh_enemy_spawnpoint_normy, obj_exploration_point, obj_wall_walkthrough, obj_protector,obj_uplifter, obj_speedbooster, obj_ice_spike, obj_evil_snail, obj_squasher]
 
-all_objects_layers = ["Walls","Walls","Spikes","Player","Goal","MiniGames","Player","Player","Player", "MiniGames", "MiniGames", "Spikes", "Traps", "MiniGames", "Walls", "Traps", "Spikes", "Goal", "Walls"] //have no idea why conveyer belts are on the goal layer but oh well
+all_objects_name = ["Wall", "Wall(alt)", "Spike", "Player Spawnpoint", "Conveyer Belt", "Bomb Spawner", "Upwards Facing Gun", "Side Facing Gun", "Downwards Facing Gun", "Destructable Tile", "Explosive Tile", "Turret", "Gift Box", "Bubble", "Difficulty Preview", "Drone Spawner", "Bouncy Cube", "Discovery Point", "Walkthroughable Wall", "Protectors", "Spirit Lifter", "Spirit Booster", "Ice Spike", "Robo-Shelly", "Squasher"]
+
+all_objects_layers = ["Walls","Walls","Spikes","Player","Goal","MiniGames","Player","Player","Player", "MiniGames", "MiniGames", "Spikes", "Traps", "MiniGames", "Walls", "Traps", "Spikes", "Goal", "Walls" , "Traps", "MiniGames", "MiniGames" , "Traps", "Traps", "Spikes"] //have no idea why conveyer belts are on the goal layer but oh well
 
 if (!variable_global_exists("current_palette"))
 {
@@ -34,6 +36,8 @@ if (!variable_global_exists("current_palette"))
 	global.current_palette_layers = ["Walls","Walls","Spikes","Player","Goal","MiniGames","Player","MiniGames","Spikes"]
 
 }
+
+being_destroyed = false
 
 
 if (!variable_global_exists("last_loaded_c_level"))

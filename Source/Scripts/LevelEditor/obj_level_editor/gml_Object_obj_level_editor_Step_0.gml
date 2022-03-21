@@ -82,23 +82,35 @@ if (cur_mode != "placing")
 x = (round((mouse_x / grid_x)) * grid_x)
 y = (round((mouse_y / grid_y)) * grid_y)
 
+if (keyboard_check_pressed(ord("E")))
+{
+	if (placing == obj_squasher)
+	{
+		placing_rotation += 90 //this used to be 30 but squasher collisions dont like being offgrid or not being perfect 90 degree angles :(
+	}
+	if (placing_rotation >= 360)
+	{
+		placing_rotation = 0
+	}
+}
+
 camera_set_view_pos(view_camera[0],cam_x,cam_y)
 
 if (keyboard_check(ord("W")))
 {
-	cam_y -= 5
+	cam_y -= 7
 }
 if (keyboard_check(ord("S")))
 {
-	cam_y += 5
+	cam_y += 7
 }
 if (keyboard_check(ord("A")))
 {
-	cam_x -= 5
+	cam_x -= 7
 }
 if (keyboard_check(ord("D")))
 {
-	cam_x += 5
+	cam_x += 7
 }
 cam_x = clamp(cam_x,0,room_width - 1920)
 cam_y = clamp(cam_y,0,room_height - 1080)
@@ -108,7 +120,8 @@ if (mouse_check_button(mb_left) and (x != prev_x or y != prev_y))
 {
 	prev_x = x
 	prev_y = y
-	instance_create_layer(x + offset_x, y + offset_y, placing_layer, placing)
+	var inst = instance_create_layer(x + offset_x, y + offset_y, placing_layer, placing)
+	inst.image_angle = placing_rotation
 	audio_play_sound(sou_increaseHandicapA,0,false)
 	level_saved = false
 }
@@ -141,6 +154,7 @@ for (var i = 0; i < 9; i++)
 		{
 			placing = global.current_palette[i]
 			placing_layer = global.current_palette_layers[i]
+			placing_rotation = 0
 		}
 	}
 }
@@ -174,6 +188,14 @@ if (keyboard_check_pressed(vk_f2)) //handles saving files
 		{
 			squid_badball_probability = 0
 		}
+		if (instance_exists(obj_ice_spike))
+		{
+			squid_ice_spike_down_probability = get_integer("Ice Spike Fall Probability(0-100)", squid_ice_spike_down_probability * 100) / 100
+		}
+		else
+		{
+			squid_ice_spike_down_probability = 0
+		}
 		squid_fireworks_probability = get_integer("Firework Probability(0-100)", squid_fireworks_probability * 100) / 100
 		squid_conveyor_belt_change_probability = get_integer("Conveyer Belt Change Probability(0-100)", squid_conveyor_belt_change_probability * 100) / 100
 		squid_laser_probability = get_integer("Laser Probablity(0-100)", squid_laser_probability * 100) / 100
@@ -195,163 +217,41 @@ if (keyboard_check_pressed(vk_f2)) //handles saving files
 	SaveData = SaveData + string(room_mult_y)
 	
 	SaveData = SaveData + "\n-\n"
-
-	with (obj_wall)
-	{
-		
-		SaveData = SaveData + object_get_name(object_index) + ":"
-		
-		SaveData = SaveData + string(x)
-		
-		SaveData = SaveData + "," + string(y) + ","
-		
-		SaveData = SaveData + "\n"
-
-	}
 	
-	with (obj_spike_permanent)
-	{
-		
-		SaveData = SaveData + object_get_name(object_index) + ":"
-		
-		SaveData = SaveData + string(x)
-		
-		SaveData = SaveData + "," + string(y) + ","
-		
-		SaveData = SaveData + "\n"
-
-	}
+	var added_objects = []
 	
-	with (obj_playerspawn)
+	for (var i = 0; i < array_length_1d(all_objects); i += 1)
 	{
-		
-		SaveData = SaveData + object_get_name(object_index) + ":"
-		
-		SaveData = SaveData + string(x)
-		
-		SaveData = SaveData + "," + string(y) + ","
-		
-		SaveData = SaveData + "\n"
+		with (all_objects[i])
+		{
+			for (var j = 0; j < array_length_1d(added_objects); j += 1) //make sure we dont get any duplicates caused by parenting
+			{
+				if (added_objects[j] == id)
+				{
+					continue
+				}
+			}
+			
+			
+			SaveData = SaveData + object_get_name(object_index) + ":"
+			
+			added_objects[array_length_1d(added_objects) + 1] = id
+			
+			SaveData = SaveData + string(x)
+			
+			SaveData = SaveData + "," + string(y) + ","
+			
+			if (object_index == obj_squasher)
+			{
+				SaveData = SaveData + string(image_angle) + ","
+			}
+			
+			SaveData = SaveData + "\n"
 
-	}
-	
-	with (obj_conveyor_belt)
-	{
-		
-		SaveData = SaveData + object_get_name(object_index) + ":"
-		
-		SaveData = SaveData + string(x)
-		
-		SaveData = SaveData + "," + string(y) + ","
-		
-		SaveData = SaveData + "\n"
-
-	}
-	
-	with (obj_bomb_spawner)
-	{
-		
-		SaveData = SaveData + object_get_name(object_index) + ":"
-		
-		SaveData = SaveData + string(x)
-		
-		SaveData = SaveData + "," + string(y) + ","
-		
-		SaveData = SaveData + "\n"
-
-	}
-	
-	with (obj_sh_gun)
-	{
-		
-		SaveData = SaveData + object_get_name(object_index) + ":"
-		
-		SaveData = SaveData + string(x)
-		
-		SaveData = SaveData + "," + string(y) + ","
-		
-		SaveData = SaveData + "\n"
-
-	}
-	
-	with (obj_gun)
-	{
-		
-		SaveData = SaveData + object_get_name(object_index) + ":"
-		
-		SaveData = SaveData + string(x)
-		
-		SaveData = SaveData + "," + string(y) + ","
-		
-		SaveData = SaveData + "\n"
-
-	}
-	
-	with (obj_enemy)
-	{
-		
-		SaveData = SaveData + object_get_name(object_index) + ":"
-		
-		SaveData = SaveData + string(x)
-		
-		SaveData = SaveData + "," + string(y) + ","
-		
-		SaveData = SaveData + "\n"
-
-	}
-	
-	with (obj_bubble)
-	{
-		
-		SaveData = SaveData + object_get_name(object_index) + ":"
-		
-		SaveData = SaveData + string(x)
-		
-		SaveData = SaveData + "," + string(y) + ","
-		
-		SaveData = SaveData + "\n"
-
-	}
-	
-	with (obj_drone_spawner)
-	{
-		
-		SaveData = SaveData + object_get_name(object_index) + ":"
-		
-		SaveData = SaveData + string(x)
-		
-		SaveData = SaveData + "," + string(y) + ","
-		
-		SaveData = SaveData + "\n"
-
-	}
-	
-	with (obj_sh_enemy_spawnpoint_normy)
-	{
-		
-		SaveData = SaveData + object_get_name(object_index) + ":"
-		
-		SaveData = SaveData + string(x)
-		
-		SaveData = SaveData + "," + string(y) + ","
-		
-		SaveData = SaveData + "\n"
-
-	}
-	
-	with (obj_exploration_point)
-	{
-		
-		SaveData = SaveData + object_get_name(object_index) + ":"
-		
-		SaveData = SaveData + string(x)
-		
-		SaveData = SaveData + "," + string(y) + ","
-		
-		SaveData = SaveData + "\n"
-
+		}
 	}
 
+	added_objects = [] //discard the array
 
 	var file
 	file = file_text_open_write(program_directory + "/snailax_levels/" + file_name + ".wysld")
@@ -365,18 +265,10 @@ if (keyboard_check_pressed(vk_f3) or starting_play_mode or (global.last_loaded_c
 {
 
 	//TODO: you know I should probably just make a for loop that iterates through all valid editor objects and clear them
-	instance_destroy(obj_wall)
-	instance_destroy(obj_wallB)
-	instance_destroy(obj_playerspawn)
-	instance_destroy(obj_spike_permanent)
-	instance_destroy(obj_conveyor_belt)
-	instance_destroy(obj_bomb_spawner)
-	instance_destroy(obj_sh_gun)
-	instance_destroy(obj_gun)
-	instance_destroy(obj_enemy)
-	instance_destroy(obj_bubble)
-	instance_destroy(obj_drone_spawner)
-	instance_destroy(obj_exploration_point)
+	for (var i = 0; i < array_length_1d(all_objects); i += 1)
+	{
+		instance_destroy(all_objects[i])
+	}
 
 
 	var file_name = ""
@@ -442,6 +334,11 @@ if (keyboard_check_pressed(vk_f3) or starting_play_mode or (global.last_loaded_c
 	
 	var level_version = real(header_data[0])
 	
+	if (level_version > 3)
+	{
+		show_message("This format is for a future version! Expect weird issues when loading and be sure to check the github for future versions!")
+	}
+	
 	if (level_version == 1)
 	{
 		squid_ground_spike_probability = 0
@@ -469,17 +366,17 @@ if (keyboard_check_pressed(vk_f3) or starting_play_mode or (global.last_loaded_c
 		squid_fireworks_probability = real(header_data[8])
 		squid_conveyor_belt_change_probability = real(header_data[9])
 		squid_laser_probability = real(header_data[10])
-		if (level_version == 2)
-		{
-			room_mult_x = 1
-			room_mult_y = 1
-			level_version = 3
-		}
-		else
-		{
-			room_mult_x = real(header_data[11])
-			room_mult_y = real(header_data[12])
-		}
+	}
+	if (level_version == 2)
+	{
+		room_mult_x = 1
+		room_mult_y = 1
+		level_version = 3
+	}
+	else
+	{
+		room_mult_x = real(header_data[11])
+		room_mult_y = real(header_data[12])
 	}
 	
 	room_width = 1920 * room_mult_x
@@ -499,6 +396,10 @@ if (keyboard_check_pressed(vk_f3) or starting_play_mode or (global.last_loaded_c
 		var x_pos = ""
 		
 		var y_pos = ""
+		
+		var p_rotation = ""
+		
+		var parse_rot = false
 		
 		while (string_char_at(data,k) != ":")
 		{
@@ -524,6 +425,14 @@ if (keyboard_check_pressed(vk_f3) or starting_play_mode or (global.last_loaded_c
 			layer_to_place_on = "MiniGames"
 		}
 		else if (name == "obj_sh_gun")
+		{
+			layer_to_place_on = "Player"
+		}
+		else if (name == "obj_sh_gun2")
+		{
+			layer_to_place_on = "Player"
+		}
+		else if (name == "obj_sh_gun3")
 		{
 			layer_to_place_on = "Player"
 		}
@@ -555,7 +464,31 @@ if (keyboard_check_pressed(vk_f3) or starting_play_mode or (global.last_loaded_c
 		{
 			layer_to_place_on = "Goal"
 		}
-		
+		else if (name == "obj_protector")
+		{
+			layer_to_place_on = "Traps"
+		}
+		else if (name == "obj_ice_spike")
+		{
+			layer_to_place_on = "Traps"
+		}
+		else if (name == "obj_uplifter")
+		{
+			layer_to_place_on = "MiniGames"
+		}
+		else if (name == "obj_speedbooster")
+		{
+			layer_to_place_on = "MiniGames"
+		}
+		else if (name == "obj_evil_snail")
+		{
+			layer_to_place_on = "Traps"
+		}
+		else if (name == "obj_squasher")
+		{
+			layer_to_place_on = "Spikes"
+			parse_rot = true
+		}
 		k++
 		
 		while (string_char_at(data,k) != ",")
@@ -575,15 +508,27 @@ if (keyboard_check_pressed(vk_f3) or starting_play_mode or (global.last_loaded_c
 		}
 		
 		y_pos = real(y_pos)
-				
-		instance_create_layer(x_pos, y_pos, layer_to_place_on, asset_get_index(name))
 		
-	}
-	
-	with (obj_sh_gun) //THIS IS AWFUL BUT IT WORKS SO I COULD CARE LESS
-	{
-		instance_create_layer(x, y, "Player", object_index)
-		instance_destroy()
+		if (parse_rot)
+		{
+			k++
+			
+			while (string_char_at(data,k) != ",")
+			{
+				p_rotation = p_rotation + string_char_at(data,k)
+				k++
+			}
+			p_rotation = real(p_rotation)
+		}
+		else
+		{
+			p_rotation = 0
+		}
+				
+		var new_object = instance_create_layer(x_pos, y_pos, layer_to_place_on, asset_get_index(name))
+		new_object.image_angle = p_rotation
+		
+		
 	}
 	
 	current_level_name = file_name
@@ -603,12 +548,22 @@ if (keyboard_check_pressed(vk_f3) or starting_play_mode or (global.last_loaded_c
 
 if (keyboard_check_pressed(vk_f1) or starting_play_mode)
 {
+	starting_play_mode = false
 	if (not level_saved)
 	{
 		show_message("Please save your level before testing!")
 	}
 	else
 	{
+		
+		if (not instance_exists(obj_playerspawn))
+		{
+			show_message("You NEED a player spawn to play a level!")
+			return false
+		}
+		
+		being_destroyed = true
+		
 		//destroy the current level styler
 		instance_destroy(obj_levelstyler)
 		//forcefully clear all the walllines
@@ -623,7 +578,16 @@ if (keyboard_check_pressed(vk_f1) or starting_play_mode)
 		
 		with (obj_spike_permanent)
 		{
-			scr_rotate_object(id,true)
+			scr_rotate_object(id,true,0)
+		}
+		
+		with (obj_ice_spike)
+		{
+			scr_rotate_object(id,true,3)
+			var workaround_object = instance_create_layer(x,y,"Traps",obj_ice_spike)
+			workaround_object.image_angle = image_angle
+			workaround_object.alarm = 1
+			instance_destroy()
 		}
 	
 		if (instance_exists(obj_conveyor_belt)) //properly initialize conveyer sounds
@@ -657,6 +621,16 @@ if (keyboard_check_pressed(vk_f1) or starting_play_mode)
 			alarm = 1
 		}
 		
+		with (obj_squasher)
+		{
+			alarm[4] = 1
+		}
+		
+		with (obj_evil_snail)
+		{
+			alarm = 1
+		}
+		
 		with (obj_sh_enemy_spawnpoint_normy) //spawn the funny
 		{
 			alarm = 1
@@ -673,6 +647,11 @@ if (keyboard_check_pressed(vk_f1) or starting_play_mode)
 			alarm[1] = 1
 		}
 		
+		with (obj_protector)
+		{
+			alarm = 1
+		}
+		
 		instance_create_layer(obj_playerspawn.x, obj_playerspawn.y, "Player", obj_player)
 		var SQUIDGAMES = instance_create_layer(obj_playerspawn.x, obj_playerspawn.y, "Player", obj_ai_general)
 		SQUIDGAMES.setting_ground_spike_probability = squid_ground_spike_probability
@@ -687,7 +666,6 @@ if (keyboard_check_pressed(vk_f1) or starting_play_mode)
 		SQUIDGAMES.setting_wall_spike_probability = squid_wall_spike_probability
 		SQUIDGAMES.setting_laser_probability = squid_laser_probability
 		instance_destroy(obj_playerspawn)
-		starting_play_mode = false
 		instance_destroy()
 	}
 
