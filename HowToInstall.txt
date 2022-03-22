@@ -16,11 +16,12 @@ Youtube Tutorial if you're confused -  https://www.youtube.com/watch?v=06KAi3XVJ
 8. Press Apply Patch, and switch files from "Supported ROMS" to "All Files"
 9. In that menu, go to the snailax folder, and select snailax.bps.
 10. Once you've done that, another menu will appear.
-11. Go to C:\Program Files (x86)\Steam\steamapps\common\Will You Snail
+11. Go to your Will You Snail install directory, you can find this by browsing local files, keep the resulting file explorer window open.
 12. Select data.win, press apply, and then press apply again.
-13. Go back to C:\Program Files (x86)\Steam\steamapps\common\Will You Snail in your regular file manager.
+13. Go back to the file explorer window that opened back in step 11.
 14. Rename data.win to anything, recommended naming it something such as "backup.win"
 15. Rename Snailax.win to data.win
+16. Copy audiogroup2.dat into the Will You Snail, install folder, saying yes to overriding it.
 16. You've installed snailax successfully.
 
 --Archive--

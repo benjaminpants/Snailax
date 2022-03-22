@@ -60,22 +60,34 @@ if (cur_mode != "placing")
 		}
 		if (keyboard_check_pressed(ord("C")))
 		{
-			room_mult_x = get_integer("Room Size Horizontal(In screens, divided by 100)\n100 = 1 screen\n125 = 1.25 screens\n200 = 2 screens",room_mult_x * 100) / 100
-			room_mult_y = get_integer("Room Size Vertical(In screens, divided by 100)\n100 = 1 screen\n125 = 1.25 screens\n200 = 2 screens",room_mult_y * 100) / 100
-			if (room_mult_x < 1)
+			var menu_option = get_integer("Welcome to the very stupid and dumb level properties window!!\n1 = Change Room Size\n2 = Change Song\n3 = Change Style", 0)
+			if (menu_option == 1)
 			{
-				show_message("Horizontal Size can't be less then 1!")
-				room_mult_x = 1
+				room_mult_x = get_integer("Room Size Horizontal(In screens, divided by 100)\n100 = 1 screen\n125 = 1.25 screens\n200 = 2 screens",room_mult_x * 100) / 100
+				room_mult_y = get_integer("Room Size Vertical(In screens, divided by 100)\n100 = 1 screen\n125 = 1.25 screens\n200 = 2 screens",room_mult_y * 100) / 100
+				if (room_mult_x < 1)
+				{
+					show_message("Horizontal Size can't be less then 1!")
+					room_mult_x = 1
+				}
+				if (room_mult_y < 1)
+				{
+					show_message("Vertical Size can't be less then 1!")
+					room_mult_y = 1
+				}
+				room_width = 1920 * room_mult_x
+				room_height = 1080 * room_mult_y
+				scr_colgrid_destroy()
+				scr_colgrid_fill()
 			}
-			if (room_mult_y < 1)
+			else if (menu_option == 2)
 			{
-				show_message("Vertical Size can't be less then 1!")
-				room_mult_y = 1
+				current_song = get_integer("Song Names and IDs(TYPING ANY OTHER NUMBER MAY BREAK YOUR LEVEL)\n0 = Jump and Die\n1 = Simulated Life\n2 = Simulated Life(Underwater)\n4 = Make It Pain\n5 = Admitting Defeat\n6 = Shelly Fire\n7 = Demolition Warning\n8 = Disco Of Doom\n9 = Chill Zone\n10 = Mr. Dance\n11 = Underwater\n12 = Mama Squid\n13 = Death By Nanobots\n14 = Helpy Loves You\n15 = Winter Mode\n16 = Artifical Joy\n17 = Tension\n18 = Final Encounter\n19 = Reality Diving\n20 = Brain Ambience\n21 = Shelly Fire(Underwater)", current_song)
 			}
-			room_width = 1920 * room_mult_x
-			room_height = 1080 * room_mult_y
-			scr_colgrid_destroy()
-			scr_colgrid_fill()
+			else if (menu_option == 3)
+			{
+				current_theme = get_integer("Theme IDs:\n0 = Default\n1 = Bubblegum\n2 = Disco\n3 = Underwater\n4 = Brain", current_theme)
+			}
 		}
 	}
 	return false;
@@ -86,9 +98,25 @@ y = (round((mouse_y / grid_y)) * grid_y)
 
 if (keyboard_check_pressed(ord("E")))
 {
-	if (placing == obj_squasher)
+	if (placing == obj_squasher or placing == obj_fish)
 	{
 		placing_rotation += 90 //this used to be 30 but squasher collisions dont like being offgrid or not being perfect 90 degree angles :(
+	}
+	if (placing == obj_underwater_current)
+	{
+		placing_rotation += 30 
+	}
+	if (placing_rotation >= 360)
+	{
+		placing_rotation = 0
+	}
+}
+
+if (keyboard_check_pressed(ord("Q")))
+{
+	if (placing == obj_underwater_current)
+	{
+		placing_rotation += 5 
 	}
 	if (placing_rotation >= 360)
 	{
@@ -202,23 +230,27 @@ if (keyboard_check_pressed(vk_f2)) //handles saving files
 		squid_conveyor_belt_change_probability = get_integer("Conveyer Belt Change Probability(0-100)", squid_conveyor_belt_change_probability * 100) / 100
 		squid_laser_probability = get_integer("Laser Probablity(0-100)", squid_laser_probability * 100) / 100
 	}
-	var SaveData = "3\n" //file version + squid ai variation
+	var SaveData = "4\n" //file version
 	
 	SaveData = SaveData + string(squid_ground_spike_probability) + "\n"
 	SaveData = SaveData + string(squid_wall_spike_probability) + "\n"
 	SaveData = SaveData + string(squid_ceiling_spike_probability) + "\n"
 	SaveData = SaveData + string(squid_air_cat_probability) + "\n"
-	SaveData = SaveData + string(squid_badball_probability) + "\n" //not implemented because the laser thingies aren't yet
+	SaveData = SaveData + string(squid_badball_probability) + "\n"
 	SaveData = SaveData + string(squid_combletely_disabled) + "\n" //not implemented
-	SaveData = SaveData + string(squid_ice_spike_down_probability) + "\n" //not implemented
+	SaveData = SaveData + string(squid_ice_spike_down_probability) + "\n"
 	SaveData = SaveData + string(squid_fireworks_probability) + "\n"
 	SaveData = SaveData + string(squid_conveyor_belt_change_probability) + "\n"
 	SaveData = SaveData + string(squid_laser_probability) + "\n"
 	
 	SaveData = SaveData + string(room_mult_x) + "\n"
-	SaveData = SaveData + string(room_mult_y)
+	SaveData = SaveData + string(room_mult_y) + "\n"
 	
-	SaveData = SaveData + "\n-\n"
+	SaveData = SaveData + string(current_song) + "\n"
+	
+	SaveData = SaveData + string(current_theme) + "\n"
+	
+	SaveData = SaveData + "-\n"
 	
 	var added_objects = []
 	
@@ -243,7 +275,7 @@ if (keyboard_check_pressed(vk_f2)) //handles saving files
 			
 			SaveData = SaveData + "," + string(y) + ","
 			
-			if (object_index == obj_squasher)
+			if (object_index == obj_squasher or object_index == obj_underwater_current or object_index == obj_fish)
 			{
 				SaveData = SaveData + string(image_angle) + ","
 			}
@@ -336,7 +368,7 @@ if (keyboard_check_pressed(vk_f3) or starting_play_mode or (global.last_loaded_c
 	
 	var level_version = real(header_data[0])
 	
-	if (level_version > 3)
+	if (level_version > 4)
 	{
 		show_message("This format is for a future version! Expect weird issues when loading and be sure to check the github for future versions!")
 	}
@@ -380,13 +412,24 @@ if (keyboard_check_pressed(vk_f3) or starting_play_mode or (global.last_loaded_c
 		room_mult_x = real(header_data[11])
 		room_mult_y = real(header_data[12])
 	}
+	if (level_version == 3)
+	{
+		level_version = 4
+		current_song = 0
+		current_theme = 0
+	}
+	else
+	{
+		current_song = real(header_data[13])
+		current_theme = real(header_data[14])
+	}
 	
 	room_width = 1920 * room_mult_x
 	room_height = 1080 * room_mult_y
 	scr_colgrid_destroy()
 	scr_colgrid_fill()
 	
-	//squid_level = real(header_data[1]) //SQUID GAMES?
+	//F to pay respects to "SQUID GAMES?" comment, RIP 2022-2022
 	
 	var test = 0
 	
@@ -493,6 +536,16 @@ if (keyboard_check_pressed(vk_f3) or starting_play_mode or (global.last_loaded_c
 			layer_to_place_on = "Spikes"
 			parse_rot = true
 		}
+		else if (name == "obj_underwater_current")
+		{
+			layer_to_place_on = "BackDecoration"
+			parse_rot = true
+		}
+		else if (name == "obj_fish")
+		{
+			layer_to_place_on = "Traps"
+			parse_rot = true
+		}
 		k++
 		
 		while (string_char_at(data,k) != ",")
@@ -575,8 +628,12 @@ if (keyboard_check_pressed(vk_f1) or starting_play_mode)
 		a = layer_get_all_elements(lay_id)
 		for (i = 0; i < array_length_1d(a); i++)
 			layer_sprite_destroy(a[i])
-		//recreate the level styler
-		instance_create_layer(0, 0, "Player", obj_levelstyler)
+		//recreate the level styler with the new style
+		instance_create_layer(0, 0, "Player", all_styler_objects[current_theme])
+		
+		instance_destroy(obj_music_parent) //destroy any and all music!!! >:(
+		
+		instance_create_layer(0,0, "FadeOutIn", all_music_objects[current_song]) //create music :)
 		
 		global.last_loaded_c_level = current_level_name
 		
@@ -656,6 +713,30 @@ if (keyboard_check_pressed(vk_f1) or starting_play_mode)
 			alarm = 1
 		}
 		
+		with (obj_underwater_current)
+		{
+			alarm = 1
+		}
+		
+		with (obj_drone_piranha_spawner)
+		{
+			alarm = 1
+			visible = false
+			paussed = false
+			
+		}
+		
+		with (obj_jellyfish)
+		{
+			alarm = 1
+			visible = true
+		}
+		with (obj_fish)
+		{
+			alarm = 1
+			base_dir = image_angle
+		}
+		
 		instance_create_layer(obj_playerspawn.x, obj_playerspawn.y, "Player", obj_player)
 		var SQUIDGAMES = instance_create_layer(obj_playerspawn.x, obj_playerspawn.y, "Player", obj_ai_general)
 		SQUIDGAMES.setting_ground_spike_probability = squid_ground_spike_probability
@@ -669,6 +750,10 @@ if (keyboard_check_pressed(vk_f1) or starting_play_mode)
 		SQUIDGAMES.setting_conveyor_belt_change_probability = squid_conveyor_belt_change_probability
 		SQUIDGAMES.setting_wall_spike_probability = squid_wall_spike_probability
 		SQUIDGAMES.setting_laser_probability = squid_laser_probability
+		if (current_theme == 3)
+		{
+			SQUIDGAMES.setting_calculate_frames_ahead += 10
+		}
 		instance_destroy(obj_playerspawn)
 		instance_destroy()
 	}

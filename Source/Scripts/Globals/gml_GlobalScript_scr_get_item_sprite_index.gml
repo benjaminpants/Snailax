@@ -3,7 +3,7 @@ if (argument0 == spr_snail_house_gun or argument0 == spr_snail_house_gun2 or arg
 	return [2,argument0,1]
 }
 
-if (argument0 == spr_difficulty_display_old)
+if (argument0 == spr_difficulty_display_old or argument0 == spr_underwater_current)
 {
 	return [0,argument0,0.25]
 }

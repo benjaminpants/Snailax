@@ -16,6 +16,9 @@ Then you choose a slot, same controls as choosing an item.
 
 C with the menu open to change the size of your level.
 
+Some items support rotations, you can rotate these objects with E, and some support subtler rotations which you can do with Q.
+How much each object can be rotated may very.
+
 
 
 F1 to play the level

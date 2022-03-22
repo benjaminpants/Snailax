@@ -2,10 +2,15 @@ if (cur_mode == "placing")
 {
 	draw_set_font(font_aiTalk)
 	draw_set_colour(c_white)
-	if (placing == obj_squasher)
+	if (placing == obj_squasher or placing == obj_fish)
 	{
 		draw_set_halign(fa_left)
-		draw_text(0,64,"This object supports rotation. Press E to rotate.\nRotation:" + string(placing_rotation))
+		draw_text_ext_transformed(0,64,"Press E to rotate.\nRotation:" + string(placing_rotation),60,4920,0.6,0.6,0)
+	}
+	if (placing == obj_underwater_current)
+	{
+		draw_set_halign(fa_left)
+		draw_text_ext_transformed(0,64,"Press E to rotate, Q to slightly rotate\nRotation:" + string(placing_rotation),60,4920,0.6,0.6,0)
 	}
 	if (keyboard_check(vk_f9))
 	{
@@ -78,7 +83,7 @@ else
 			draw_set_colour(c_white)
 			draw_text(((i + 1) * 120) - 60, 64, string(i + 1))
 		}
-		scr_draw_subtitle("This menu is incomplete! Z to exit menu/go to place mode, X to adjust palette. C to adjust level size.", c_white)
+		scr_draw_subtitle("This menu is incomplete! Z to exit menu/go to place mode, X to adjust palette. C to adjust level properties.", c_white)
 	}
 	
 	
