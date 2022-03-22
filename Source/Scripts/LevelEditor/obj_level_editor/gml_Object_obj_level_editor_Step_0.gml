@@ -79,14 +79,22 @@ if (cur_mode != "placing")
 				room_height = 1080 * room_mult_y
 				scr_colgrid_destroy()
 				scr_colgrid_fill()
+				level_saved = false
 			}
 			else if (menu_option == 2)
 			{
-				current_song = get_integer("Song Names and IDs(TYPING ANY OTHER NUMBER MAY BREAK YOUR LEVEL)\n0 = Jump and Die\n1 = Simulated Life\n2 = Simulated Life(Underwater)\n4 = Make It Pain\n5 = Admitting Defeat\n6 = Shelly Fire\n7 = Demolition Warning\n8 = Disco Of Doom\n9 = Chill Zone\n10 = Mr. Dance\n11 = Underwater\n12 = Mama Squid\n13 = Death By Nanobots\n14 = Helpy Loves You\n15 = Winter Mode\n16 = Artifical Joy\n17 = Tension\n18 = Final Encounter\n19 = Reality Diving\n20 = Brain Ambience\n21 = Shelly Fire(Underwater)", current_song)
+				var wants_more_info = show_question("Do you want to see the song ID list first?")
+				if (wants_more_info)
+				{
+					show_message("Song Names and IDs(TYPING ANY OTHER NUMBER MAY BREAK YOUR LEVEL)\n0 = Jump and Die\n1 = Simulated Life\n2 = Simulated Life(Underwater)\n4 = Make It Pain\n5 = Admitting Defeat\n6 = Shelly Fire\n7 = Demolition Warning\n8 = Disco Of Doom\n9 = Chill Zone\n10 = Mr. Dance\n11 = Underwater\n12 = Mama Squid\n13 = Death By Nanobots\n14 = Helpy Loves You\n15 = Winter Mode\n16 = Artifical Joy\n17 = Tension\n18 = Final Encounter\n19 = Reality Diving\n20 = Brain Ambience\n21 = Shelly Fire(Underwater)")
+				}
+				current_song = get_integer("Enter Song ID:", current_song)
+				level_saved = false
 			}
 			else if (menu_option == 3)
 			{
-				current_theme = get_integer("Theme IDs:\n0 = Default\n1 = Bubblegum\n2 = Disco\n3 = Underwater\n4 = Brain", current_theme)
+				current_theme = get_integer("Theme IDs:\n0 = Default\n1 = Bubblegum\n2 = Disco\n3 = Underwater\n4 = Brain\n5 = Winter", current_theme)
+				level_saved = false
 			}
 		}
 	}
@@ -636,6 +644,20 @@ if (keyboard_check_pressed(vk_f1) or starting_play_mode)
 		instance_create_layer(0,0, "FadeOutIn", all_music_objects[current_song]) //create music :)
 		
 		global.last_loaded_c_level = current_level_name
+		
+		if (current_theme == 4)
+		{
+			instance_create_layer(-100,-100,"FadeOutIn", obj_no_squid_in_this_level)
+			var stupid_word_amount = round(((room_width + room_height) / 2) / 350)
+			var stupid_words = ["back_unicorn_betrayed_me","back_unicorn_hates_me","back_amelia_missing","back_amelia_betrayed_me", "back_writing_no_trust", "back_writing_Im_alone", "back_writing_scared", "back_writing_I_suffer", "back_writing_kill", "back_writing_deserved", "back_writing_infinite_suffer", "back_writing_suffer", "back_writing_superior", "back_nobody_understands", "back_writing_smarter", "back_writing_my_universe", "back_writing_Im_a_god", "back_writing_my_everything"]
+			for (var i = 0; i < stupid_word_amount; i += 1)
+			{
+				var stupid_brain = instance_create_layer(random_range(64,room_width - 64),random_range(64,room_height - 64),"BackDecoration",obj_draw_text_in_brain)
+				stupid_brain.image_angle = (random(1) - random(1)) * 13
+				stupid_brain.loca_key = stupid_words[round(random_range(0,array_length_1d(stupid_words) - 1))]
+				stupid_brain.parallax_move_with_cam = 0.2
+			}
+		}
 		
 		with (obj_spike_permanent)
 		{
