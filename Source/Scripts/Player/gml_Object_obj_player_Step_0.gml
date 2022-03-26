@@ -26,6 +26,8 @@ else
 lookdir_smooth = lerp(lookdir_smooth, lookdir, 0.15)
 realhspeed = (hspeed - bonus_speed_by_conveyor)
 slither_active = (vspeed == (0 * realhspeed) * 0.2)
+
+scr_autowhobble_update()
 if (round(hspeed) != 0)
 {
 	wind_sound_slither_volume = lerp(wind_sound_slither_volume, slither_active, 0.5)

@@ -93,8 +93,15 @@ if (cur_mode != "placing")
 			}
 			else if (menu_option == 3)
 			{
-				current_theme = get_integer("Theme IDs:\n0 = Default\n1 = Bubblegum\n2 = Disco\n3 = Underwater\n4 = Brain\n5 = Winter", current_theme)
+				current_theme = get_integer("Theme IDs:\n0 = Default\n1 = Bubblegum\n2 = Disco\n3 = Underwater\n4 = Brain\n5 = Winter\n6 = Glitchy", current_theme)
 				level_saved = false
+			}
+			else if (menu_option == 4)
+			{
+				var actstring = "Which mechanic do you want to enable?"
+				for (var i = 0; i < max_gimmicks; i += 1)
+				{
+				}
 			}
 		}
 	}

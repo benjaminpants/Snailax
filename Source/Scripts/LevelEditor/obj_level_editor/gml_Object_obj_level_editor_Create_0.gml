@@ -52,7 +52,7 @@ current_theme = 0
 //21 = Shelly Fire(Underwater)
 all_music_objects = [obj_music_main, obj_music_LightOcean, obj_music_LightOceanUnderw, obj_music_main, obj_music_crazy, obj_music_NoHope, obj_music_shooter, obj_music_BlockyBoss, obj_music_disco, obj_music_disco_silent, obj_music_MrDance, obj_music_underwater, obj_music_MamaSquid, obj_music_bubble_gum,obj_music_helpy, obj_music_winter, obj_music_ArtificialFun, obj_music_tension, obj_music_final_boss, obj_music_WaitingForHorizon, obj_music_InBrainSoundscape, obj_music_underwater_shooter]
 
-all_styler_objects = [obj_levelstyler, obj_levelstyler_bubblegum, obj_levelstyler_disco, obj_levelstyler_underwater, obj_levelstyler_brain, obj_levelstyler_winter]
+all_styler_objects = [obj_levelstyler, obj_levelstyler_bubblegum, obj_levelstyler_disco, obj_levelstyler_underwater, obj_levelstyler_brain, obj_levelstyler_winter, obj_levelstyler_glitchy]
 
 
 all_objects = [obj_wall,obj_wallB,obj_spike_permanent,obj_playerspawn, obj_conveyor_belt,obj_bomb_spawner,obj_sh_gun, obj_sh_gun2, obj_sh_gun3, obj_destructable_wall, obj_explosive_wall, obj_gun, obj_enemy, obj_bubble, obj_difficulty_shower, obj_drone_spawner, obj_sh_enemy_spawnpoint_normy, obj_exploration_point, obj_wall_walkthrough, obj_protector,obj_uplifter, obj_speedbooster, obj_ice_spike, obj_evil_snail, obj_squasher, obj_underwater_current, obj_fish, obj_jellyfish, obj_drone_piranha_spawner, obj_wall_brain]
@@ -60,6 +60,15 @@ all_objects = [obj_wall,obj_wallB,obj_spike_permanent,obj_playerspawn, obj_conve
 all_objects_name = ["Wall", "Wall(alt)", "Spike", "Player Spawnpoint", "Conveyer Belt", "Bomb Spawner", "Upwards Facing Gun", "Side Facing Gun", "Downwards Facing Gun", "Destructable Tile", "Explosive Tile", "Turret", "Gift Box", "Bubble", "Difficulty Preview", "Drone Spawner", "Bouncy Cube", "Discovery Point", "Walkthroughable Wall", "Protectors", "Spirit Lifter", "Spirit Booster", "Ice Spike", "Robo-Shelly", "Squasher", "Current" , "Fish", "Jellyfish", "Piranha", "Cricut Wall"]
 
 all_objects_layers = ["Walls","Walls","Spikes","Player","Goal","MiniGames","Player","Player","Player", "MiniGames", "MiniGames", "Spikes", "Traps", "MiniGames", "Walls", "Traps", "Spikes", "Goal", "Walls" , "Traps", "MiniGames", "MiniGames" , "Traps", "Traps", "Spikes", "BackDecoration", "Traps", "Traps", "Traps", "Walls"] //have no idea why conveyer belts are on the goal layer but oh well
+
+
+//DDR
+//darkness
+current_gimmicks = [false,false]
+current_gimmicks_names = ["Arrows", "Darkness"]
+max_gimmicks = array_length_1d(current_gimmicks)
+
+global.current_character = 0 //disable custom characters
 
 if (!variable_global_exists("current_palette"))
 {
