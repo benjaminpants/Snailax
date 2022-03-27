@@ -1,4 +1,4 @@
-level = asset_get_index("level_basic_copy_me")
+level = level_basic_copy_me
 beaten_on_diff = 0
 beaten_on_diff_underw = 0
 type = 1

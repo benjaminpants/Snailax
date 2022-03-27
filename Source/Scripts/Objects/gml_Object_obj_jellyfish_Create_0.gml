@@ -23,3 +23,4 @@ tent2_angle = 0
 tent3_angle = 0
 warncol_col = merge_color(obj_levelstyler.col_traps, c_white, 0.5)
 col = obj_levelstyler.col_traps
+prediction_flash = 0.5

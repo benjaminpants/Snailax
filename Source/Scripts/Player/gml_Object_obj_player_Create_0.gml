@@ -65,7 +65,6 @@ if instance_exists(obj_levelstyler)
     if variable_instance_exists(obj_levelstyler.id, "col_snail_body")
         event_user(0)
 }
-
 time = 0
 active_time = 0
 inbubble_flash = 0

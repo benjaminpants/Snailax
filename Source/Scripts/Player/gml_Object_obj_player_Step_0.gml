@@ -2,6 +2,7 @@ if keyboard_check_pressed(vk_f2)
 {
     room_restart()
 }
+scr_autowhobble_update()
 audio_listener_position(x, y, 0)
 if underwater
 {
@@ -25,17 +26,8 @@ else
 }
 lookdir_smooth = lerp(lookdir_smooth, lookdir, 0.15)
 realhspeed = (hspeed - bonus_speed_by_conveyor)
-slither_active = (vspeed == (0 * realhspeed) * 0.2)
-
-scr_autowhobble_update()
-if (round(hspeed) != 0)
-{
-	wind_sound_slither_volume = lerp(wind_sound_slither_volume, slither_active, 0.5)
-}
-else
-{
-	wind_sound_slither_volume = 0
-}
+slither_active = ((vspeed == 0 * realhspeed) * 0.2)
+wind_sound_slither_volume = lerp(wind_sound_slither_volume, slither_active, 0.5)
 audio_sound_gain_fx(wind_sound_slither, ((wind_sound_slither_volume * wind_sound_slither_volume) * 0.8), 0.016666666666666666)
 if (reading_file == -1)
 {
