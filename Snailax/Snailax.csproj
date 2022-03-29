@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Main.cs~RF1dea6716.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="GmmlPatcher">
+      <HintPath>..\Dependencies\GmmlPatcher.dll</HintPath>
+    </Reference>
+    <Reference Include="UndertaleModLib">
+      <HintPath>..\Dependencies\UndertaleModLib.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
