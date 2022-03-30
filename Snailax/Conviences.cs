@@ -7,29 +7,30 @@ namespace Snailax
 {
     public static class Conviences
     {
+
+        //this is now just an alias, deprecation?
         public static UndertaleString CreateAndSaveString(this UndertaleData data, string str)
         {
-            UndertaleString st = new UndertaleString();
-
-            st.Content = str;
-
-            data.Strings.Add(st);
 
             Logger.Log("Added string: " + str);
 
-            return st;
+            return data.Strings.MakeString(str);
         }
 
         public static UndertaleRoom.GameObject AddObjectToLayer(this UndertaleRoom room, UndertaleData data, string objectname, string layername)
         {
+            data.GeneralInfo.LastObj++;
             UndertaleRoom.GameObject obj = new UndertaleRoom.GameObject()
             {
-                InstanceID = data.GeneralInfo.LastObj++,
+                InstanceID = data.GeneralInfo.LastObj,
                 ObjectDefinition = data.GameObjects.ByName(objectname),
                 X = 0,
                 Y = 0
             };
+
             room.Layers.First(layer => layer.LayerName.Content == layername).InstancesData.Instances.Add(obj);
+
+            room.GameObjects.Add(obj);
 
             return obj;
         }
@@ -45,6 +46,21 @@ namespace Snailax
 
         }
 
+        public static UndertaleCode CreateCode(this UndertaleData data, string name, string gml, ushort arguments = 0)
+        {
+            UndertaleCode code = new UndertaleCode();
+            code.Name = data.CreateAndSaveString(name);
+            try
+            {
+                code.AppendGML(gml, data);
+            }
+            catch (Exception) { };
+            code.ArgumentsCount = arguments;
+
+            data.Code.Add(code);
+
+            return code;
+        }
 
         public static UndertaleScript CreateScript(this UndertaleData data, string scriptname, string gml, ushort arguments = 0)
         {
@@ -58,6 +74,8 @@ namespace Snailax
             catch (Exception) { };
             code.ArgumentsCount = arguments;
             scr.Code = code;
+
+            code.Name = data.CreateAndSaveString("GlobalScript_" + scriptname);
 
             data.Code.Add(code);
 
