@@ -280,7 +280,7 @@ namespace Snailax
 
             Dictionary<string, string> OverrideScripts = DictionarizeGMLFolder(Path.Combine(gmlfolder, "Overrides"));
 
-            Dictionary<string, string> FrontScripts = DictionarizeGMLFolder(Path.Combine(gmlfolder, "FrontScripts"));
+            Dictionary<string, string> FrontScripts = DictionarizeGMLFolder(Path.Combine(gmlfolder, "FrontScripts")); //not implemented, but these would append themselves to the front of the GML of whatever script they are using
 
             foreach (KeyValuePair<string, string> kvp in OverrideScripts)
             {
