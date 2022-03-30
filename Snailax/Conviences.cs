@@ -1,6 +1,7 @@
 ﻿using GmmlPatcher;
 using UndertaleModLib;
 using UndertaleModLib.Models;
+using UndertaleModLib.Decompiler;
 using System;
 
 namespace Snailax
@@ -15,6 +16,14 @@ namespace Snailax
             Logger.Log("Added string: " + str);
 
             return data.Strings.MakeString(str);
+        }
+
+        public static string DecompileGML(this UndertaleCode code)
+        {
+
+            Logger.Log("Decompiling: " + code.Name.Content);
+
+            return Decompiler.Decompile(code, Snailax.GameMakerMod.GDC);
         }
 
         public static UndertaleRoom.GameObject AddObjectToLayer(this UndertaleRoom room, UndertaleData data, string objectname, string layername)

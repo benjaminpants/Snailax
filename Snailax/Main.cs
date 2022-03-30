@@ -3,6 +3,7 @@ using UndertaleModLib;
 using UndertaleModLib.Models;
 using System;
 using System.IO;
+using UndertaleModLib.Decompiler;
 using System.Reflection;
 
 namespace Snailax
@@ -12,6 +13,7 @@ namespace Snailax
 
         public static Dictionary<string,string> GMLkvp = new Dictionary<string,string>();
 
+        public static GlobalDecompileContext? GDC;
 
         public static Dictionary<string, string> DictionarizeGMLFolder(string gmlfolder)
         {
@@ -60,7 +62,7 @@ namespace Snailax
 
         public static void Load(UndertaleData data, IEnumerable<ModMetadata> queuedMods)
         {
-
+            GDC = new GlobalDecompileContext(data,false);
             //supress vs being stupid
             #pragma warning disable CS8604
             string gmlfolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),"GMLSource");
@@ -282,6 +284,8 @@ namespace Snailax
 
             Dictionary<string, string> FrontScripts = DictionarizeGMLFolder(Path.Combine(gmlfolder, "FrontScripts")); //not implemented, but these would append themselves to the front of the GML of whatever script they are using
 
+            Dictionary<string, string> AppendScripts = DictionarizeGMLFolder(Path.Combine(gmlfolder, "AppendScripts"));
+
             foreach (KeyValuePair<string, string> kvp in OverrideScripts)
             {
                 UndertaleCode code = data.Code.First(c => c.Name.Content == kvp.Key);
@@ -292,6 +296,29 @@ namespace Snailax
                         code.ReplaceGML(kvp.Value, data);
                     }
                     catch (Exception) {/* die */}
+                }
+            }
+
+            foreach (KeyValuePair<string, string> kvp in FrontScripts)
+            {
+                UndertaleCode code = data.Code.First(c => c.Name.Content == kvp.Key);
+                if (code != null)
+                {
+                    string newcode = kvp.Value + "\n" + code.DecompileGML();
+                    try
+                    {
+                        code.ReplaceGML(newcode, data);
+                    }
+                    catch (Exception) {/* die */}
+                }
+            }
+
+            foreach (KeyValuePair<string, string> kvp in AppendScripts)
+            {
+                UndertaleCode code = data.Code.First(c => c.Name.Content == kvp.Key);
+                if (code != null)
+                {
+                    code.AppendGMLSafe(kvp.Value, data);
                 }
             }
 
