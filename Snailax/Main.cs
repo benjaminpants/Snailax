@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace Snailax
 {
-    public static class GameMakerMod
+    public class GameMakerMod : IGameMakerMod
     {
 
         public static Dictionary<string,string> GMLkvp = new Dictionary<string,string>();
@@ -60,8 +60,11 @@ namespace Snailax
             return data.CreateScript(name, GMLkvp[key], arguments);
         }
 
-        public static void Load(UndertaleData data, IEnumerable<ModMetadata> queuedMods)
+        public void Load(int audioGroup, UndertaleData data, IReadOnlyList<ModMetadata> availableDependencies,
+        IEnumerable<ModMetadata> queuedMods)
         {
+
+            if (audioGroup != -1) return;
             GDC = new GlobalDecompileContext(data,false);
             //supress vs being stupid
             #pragma warning disable CS8604
