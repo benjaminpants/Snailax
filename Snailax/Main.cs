@@ -13,9 +13,9 @@ namespace Snailax
         public static Dictionary<string,string> GMLkvp = new Dictionary<string,string>();
 
 
-        public static bool LoadGMLFolder(string gmlfolder)
+        public static Dictionary<string, string> DictionarizeGMLFolder(string gmlfolder)
         {
-
+            Dictionary<string, string> Dict = new Dictionary<string, string>();
 
             try
             {
@@ -28,7 +28,7 @@ namespace Snailax
                     if (fo.Extension == ".gml")
                     {
                         Console.WriteLine("Reading File: " + fo.Name);
-                        GMLkvp.Add(Path.GetFileNameWithoutExtension(fo.Name), File.ReadAllText(infos[i]));
+                        Dict.Add(Path.GetFileNameWithoutExtension(fo.Name), File.ReadAllText(infos[i]));
                     }
                 }
             }
@@ -37,15 +37,25 @@ namespace Snailax
                 Logger.Log("Failed to read/open: " + gmlfolder, Logger.LogLevel.Error);
                 Logger.Log("Expect strange behavior or future crashes!", Logger.LogLevel.Error);
                 Console.ResetColor();
-                return false;
+                return new Dictionary<string, string>();
             }
 
-            return true;
+            return Dict;
         }
 
-        public static void CreateScriptFromKVP(UndertaleData data, string name, string key, ushort arguments)
+        public static bool LoadGMLFolder(string gmlfolder)
         {
-            data.CreateScript(name, GMLkvp[key], arguments);
+            Dictionary<string, string> dict = DictionarizeGMLFolder(gmlfolder);
+            foreach (KeyValuePair<string,string> kvp in dict)
+            {
+                GMLkvp.Add(kvp.Key,kvp.Value);
+            }
+            return dict.Count != 0;
+        }
+
+        public static UndertaleScript CreateScriptFromKVP(UndertaleData data, string name, string key, ushort arguments)
+        {
+            return data.CreateScript(name, GMLkvp[key], arguments);
         }
 
         public static void Load(UndertaleData data, IEnumerable<ModMetadata> queuedMods)
@@ -77,7 +87,8 @@ namespace Snailax
 
             CreateScriptFromKVP(data, "scr_getitemoffsets",  "gml_GlobalScript_scr_getitemoffsets", 1);
 
-            CreateScriptFromKVP(data, "scr_rotate_object", "gml_GlobalScript_scr_rotate_object", 3);
+            CreateScriptFromKVP(data, "scr_rotate_object", "gml_GlobalScript_scr_rotate_object", 3).Code.LocalsCount = 1;
+
 
             try
             {
@@ -183,13 +194,32 @@ namespace Snailax
                         LayerId = largest_layerid++, //maybe??
                         LayerName = copylayer.LayerName,
                         LayerType = copylayer.LayerType,
-                        IsVisible = copylayer.IsVisible
+                        IsVisible = copylayer.IsVisible,
+                        LayerDepth = copylayer.LayerDepth,
                     };
                     layer.Data = (UndertaleRoom.Layer.LayerData)Activator.CreateInstance(copylayer.Data.GetType()); //again thanks to config!!!
+                    layer.EffectProperties = copylayer.EffectProperties;
 
                     layer.EffectProperties = new UndertaleSimpleList<UndertaleRoom.EffectProperty>();
 
-                    // Somewhat shamefully stolen from UMT source
+                    if (layer.LayerType == UndertaleRoom.LayerType.Background)
+                    {
+                        layer.BackgroundData.AnimationSpeed = copylayer.BackgroundData.AnimationSpeed;
+                        layer.BackgroundData.AnimationSpeedType = copylayer.BackgroundData.AnimationSpeedType;
+                        layer.BackgroundData.CalcScaleX = copylayer.BackgroundData.CalcScaleX;
+                        layer.BackgroundData.CalcScaleY = copylayer.BackgroundData.CalcScaleY;
+                        layer.BackgroundData.Color = copylayer.BackgroundData.Color;
+                        layer.BackgroundData.FirstFrame = copylayer.BackgroundData.FirstFrame;
+                        layer.BackgroundData.Foreground = copylayer.BackgroundData.Foreground;
+                        layer.BackgroundData.Sprite = copylayer.BackgroundData.Sprite;
+                        layer.BackgroundData.Stretch = copylayer.BackgroundData.Stretch;
+                        layer.BackgroundData.TiledHorizontally = copylayer.BackgroundData.TiledHorizontally;
+                        layer.BackgroundData.TiledVertically = copylayer.BackgroundData.TiledVertically;
+                        layer.BackgroundData.Visible = copylayer.BackgroundData.Visible;
+                        Logger.Log("Succesfully copied BG properties!");
+                    }
+
+                        // Somewhat shamefully stolen from UMT source
                     if (layer.LayerType == UndertaleRoom.LayerType.Assets)
                     {
                         // create a new pointer list (if null)
@@ -245,6 +275,25 @@ namespace Snailax
             portal.Y = gameobj.Y - 180;
 
             portal.CreationCode = data.CreateCode("gml_ObjectCC_obj_level_select_portal_Create",GMLkvp["gml_ObjectCC_obj_level_select_portal_Create"],0);
+
+            //BULK REGISTER (your mother)
+
+            Dictionary<string, string> OverrideScripts = DictionarizeGMLFolder(Path.Combine(gmlfolder, "Overrides"));
+
+            Dictionary<string, string> FrontScripts = DictionarizeGMLFolder(Path.Combine(gmlfolder, "FrontScripts"));
+
+            foreach (KeyValuePair<string, string> kvp in OverrideScripts)
+            {
+                UndertaleCode code = data.Code.First(c => c.Name.Content == kvp.Key);
+                if (code != null)
+                {
+                    try
+                    {
+                        code.ReplaceGML(kvp.Value, data);
+                    }
+                    catch (Exception) {/* die */}
+                }
+            }
 
 
         }
