@@ -64,6 +64,15 @@ namespace Snailax
 
             LoadGMLFolder(Path.Combine(gmlfolder, "CreationCode"));
 
+            // create playerspawn before everything else
+            UndertaleGameObject playerspawn_object = new UndertaleGameObject();
+
+            playerspawn_object.Name = data.CreateAndSaveString("obj_playerspawn");
+
+            playerspawn_object.Sprite = data.Sprites.ByName("spr_player");
+
+            data.GameObjects.Add(playerspawn_object);
+
             CreateScriptFromKVP(data, "scr_get_item_sprite_index", "gml_GlobalScript_scr_get_item_sprite_index",1);
 
             CreateScriptFromKVP(data, "scr_getitemoffsets",  "gml_GlobalScript_scr_getitemoffsets", 1);
@@ -78,16 +87,6 @@ namespace Snailax
             }
             // UndertaleModLib is trying to write profile cache but fails, we don't care
             catch (Exception) { /* ignored */ }
-
-            // create playerspawn before everything else
-            UndertaleGameObject playerspawn_object = new UndertaleGameObject();
-
-            playerspawn_object.Name = data.CreateAndSaveString("obj_playerspawn");
-
-            playerspawn_object.Sprite = data.Sprites.ByName("spr_player");
-
-            data.GameObjects.Add(playerspawn_object);
-
 
             //Create the level editor object
             UndertaleGameObject level_editor_object = new UndertaleGameObject();
@@ -222,7 +221,7 @@ namespace Snailax
 
                 newroom.AddObjectToLayer(data, "obj_level_editor", "Goal");
 
-                newroom.AddObjectToLayer(data, "obj_i_hate_level_stylers", "PostProcessing");
+                newroom.AddObjectToLayer(data, "obj_i_hate_levelstylers", "PostProcessing");
 
                 newroom.AddObjectToLayer(data, "obj_post_processing_draw", "PostProcessing");
 
