@@ -98,10 +98,11 @@ if (cur_mode != "placing")
 			}
 			else if (menu_option == 4)
 			{
-				var actstring = "Which mechanic do you want to enable?"
-				for (var i = 0; i < max_gimmicks; i += 1)
-				{
-				}
+				show_message("Not implemented!")
+				//var actstring = "Which mechanic do you want to enable?"
+				//for (var i = 0; i < max_gimmicks; i += 1)
+				//{
+				//}
 			}
 		}
 	}

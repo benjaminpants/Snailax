@@ -289,7 +289,9 @@ namespace Snailax
 
             Dictionary<string, string> AppendScripts = DictionarizeGMLFolder(Path.Combine(gmlfolder, "AppendScripts"));
 
-            data.GameObjects.ByName("obj_squasher").EventHandlerFor(EventType.Alarm, (uint)0, data.Strings,data.Code,data.CodeLocals).AppendGMLSafe();
+            data.GameObjects.ByName("obj_squasher").EventHandlerFor(EventType.Alarm, (uint)4, data.Strings,data.Code,data.CodeLocals).AppendGMLSafe(GMLkvp["gml_Object_obj_squasher_Alarm_4"],data);
+
+            data.GameObjects.ByName("obj_wall_walkthrough").EventHandlerFor(EventType.Draw, EventSubtypeDraw.Draw, data.Strings, data.Code, data.CodeLocals).AppendGMLSafe(GMLkvp["gml_Object_obj_wall_walkthrough_Draw_0"], data);
 
 
             foreach (KeyValuePair<string, string> kvp in OverrideScripts)
