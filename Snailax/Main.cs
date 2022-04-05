@@ -60,7 +60,7 @@ namespace Snailax
             return data.CreateScript(name, GMLkvp[key], arguments);
         }
 
-        public void Load(int audioGroup, UndertaleData data, IReadOnlyList<ModMetadata> availableDependencies,
+        public void Load(int audioGroup, UndertaleData data, ModMetadata currentMod, IReadOnlyList<ModMetadata> availableDependencies,
         IEnumerable<ModMetadata> queuedMods)
         {
 
