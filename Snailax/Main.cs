@@ -289,6 +289,9 @@ namespace Snailax
 
             Dictionary<string, string> AppendScripts = DictionarizeGMLFolder(Path.Combine(gmlfolder, "AppendScripts"));
 
+            data.GameObjects.ByName("obj_squasher").EventHandlerFor(EventType.Alarm, (uint)0, data.Strings,data.Code,data.CodeLocals).AppendGMLSafe();
+
+
             foreach (KeyValuePair<string, string> kvp in OverrideScripts)
             {
                 UndertaleCode code = data.Code.First(c => c.Name.Content == kvp.Key);
