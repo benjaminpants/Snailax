@@ -44,8 +44,8 @@ namespace Snailax
             return obj;
         }
 
-        //PREY THAT I CAN DEPRECATE THIS FUNCTION IN THE FUTURE
-        public static void AppendGMLSafe(this UndertaleCode code, string gml, UndertaleData data)
+        //I CAN DEPRECATE THIS FUNCTION BUT IM TOO LAZY TO UPDATE MY VERSION RN
+        public static void AppendGMLSafeSN(this UndertaleCode code, string gml, UndertaleData data)
         {
             try
             {

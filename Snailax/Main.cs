@@ -112,16 +112,16 @@ namespace Snailax
             level_editor_object.Sprite = data.Sprites.ByName("spr_wall_original");
 
             level_editor_object.EventHandlerFor(EventType.Create, data.Strings, data.Code, data.CodeLocals)
-                .AppendGMLSafe(GMLkvp["gml_Object_obj_level_editor_Create_0"], data);
+                .AppendGMLSafeSN(GMLkvp["gml_Object_obj_level_editor_Create_0"], data);
 
             level_editor_object.EventHandlerFor(EventType.Step, EventSubtypeStep.Step, data.Strings, data.Code, data.CodeLocals)
-                .AppendGMLSafe(GMLkvp["gml_Object_obj_level_editor_Step_0"], data);
+                .AppendGMLSafeSN(GMLkvp["gml_Object_obj_level_editor_Step_0"], data);
 
             level_editor_object.EventHandlerFor(EventType.Draw, EventSubtypeDraw.Draw, data.Strings, data.Code, data.CodeLocals)
-                .AppendGMLSafe(GMLkvp["gml_Object_obj_level_editor_Draw_0"], data);
+                .AppendGMLSafeSN(GMLkvp["gml_Object_obj_level_editor_Draw_0"], data);
 
             level_editor_object.EventHandlerFor(EventType.Draw, EventSubtypeDraw.DrawGUI, data.Strings, data.Code, data.CodeLocals)
-                .AppendGMLSafe(GMLkvp["gml_Object_obj_level_editor_Draw_64"], data);
+                .AppendGMLSafeSN(GMLkvp["gml_Object_obj_level_editor_Draw_64"], data);
 
             data.GameObjects.Add(level_editor_object);
 
@@ -132,7 +132,7 @@ namespace Snailax
             stupid_levelstyler.ParentId = data.GameObjects.ByName("obj_levelstyler");
 
             stupid_levelstyler.EventHandlerFor(EventType.Create, data.Strings, data.Code, data.CodeLocals)
-                .AppendGMLSafe(GMLkvp["gml_Object_obj_i_hate_levelstylers_Create_0"], data);
+                .AppendGMLSafeSN(GMLkvp["gml_Object_obj_i_hate_levelstylers_Create_0"], data);
 
             data.GameObjects.Add(stupid_levelstyler);
 
@@ -289,9 +289,9 @@ namespace Snailax
 
             Dictionary<string, string> AppendScripts = DictionarizeGMLFolder(Path.Combine(gmlfolder, "AppendScripts"));
 
-            data.GameObjects.ByName("obj_squasher").EventHandlerFor(EventType.Alarm, (uint)4, data.Strings,data.Code,data.CodeLocals).AppendGMLSafe(GMLkvp["gml_Object_obj_squasher_Alarm_4"],data);
+            data.GameObjects.ByName("obj_squasher").EventHandlerFor(EventType.Alarm, (uint)4, data.Strings,data.Code,data.CodeLocals).AppendGMLSafeSN(GMLkvp["gml_Object_obj_squasher_Alarm_4"],data);
 
-            data.GameObjects.ByName("obj_wall_walkthrough").EventHandlerFor(EventType.Draw, EventSubtypeDraw.Draw, data.Strings, data.Code, data.CodeLocals).AppendGMLSafe(GMLkvp["gml_Object_obj_wall_walkthrough_Draw_0"], data);
+            data.GameObjects.ByName("obj_wall_walkthrough").EventHandlerFor(EventType.Draw, EventSubtypeDraw.Draw, data.Strings, data.Code, data.CodeLocals).AppendGMLSafeSN(GMLkvp["gml_Object_obj_wall_walkthrough_Draw_0"], data);
 
 
             foreach (KeyValuePair<string, string> kvp in OverrideScripts)
@@ -326,7 +326,7 @@ namespace Snailax
                 UndertaleCode code = data.Code.First(c => c.Name.Content == kvp.Key);
                 if (code != null)
                 {
-                    code.AppendGMLSafe(kvp.Value, data);
+                    code.AppendGMLSafeSN(kvp.Value, data);
                 }
             }
 
