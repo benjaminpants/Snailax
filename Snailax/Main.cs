@@ -277,7 +277,7 @@ namespace Snailax
             UndertaleRoom.GameObject portal = levelselect.AddObjectToLayer(data,"obj_level_select_portal","Goal");
 
             portal.X = gameobj.X - 120;
-            portal.Y = gameobj.Y - 180;
+            portal.Y = gameobj.Y - 240;
 
             portal.CreationCode = data.CreateCode("gml_ObjectCC_obj_level_select_portal_Create",GMLkvp["gml_ObjectCC_obj_level_select_portal_Create"],0);
 
