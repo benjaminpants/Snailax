@@ -97,6 +97,14 @@ namespace Snailax
             CreateScriptFromKVP(data, "scr_rotate_object", "gml_GlobalScript_scr_rotate_object", 3).Code.LocalsCount = 1;
 
 
+            try
+            {
+
+                data.Code.First(code => code.Name.Content == "gml_Object_obj_epilepsy_warning_Create_0")
+                    .AppendGML("txt_1 = \"INCOMPLETE WARNING\"\ntxt_2 = \"Snailax may be more bug-prone then usual. \nYou can access the level editor in the extras menu. \nBTW the patch file was literally generated from GMML's cache.\"", data);
+            }
+            // UndertaleModLib is trying to write profile cache but fails, we don't care
+            catch (Exception) { /* ignored */ }
 
             //Create the level editor object
             UndertaleGameObject level_editor_object = new UndertaleGameObject();
@@ -260,6 +268,15 @@ namespace Snailax
 
 
                 data.Rooms.Add(newroom);
+
+                UndertaleRoom.GameObject vic = newroom.AddObjectToLayer(data, "obj_go_to_room_victory", "Goal");
+
+                vic.X = -528;
+                vic.Y = -642;
+                vic.ScaleX = 5000;
+                vic.ScaleY = 5000;
+
+                vic.CreationCode = data.CreateCode("gml_ObjectCC_obj_go_to_room_victory_editor_Create", "go_to_room = snailax_editor_room");
             }
             
             //create the hehe funny portal
@@ -268,12 +285,12 @@ namespace Snailax
 
             UndertaleRoom.GameObject gameobj = levelselect.GameObjects.First(obj => obj.ObjectDefinition.Name.Content == "obj_player");
 
-            UndertaleRoom.GameObject portal = levelselect.AddObjectToLayer(data,"obj_level_select_portal","Goal");
+            //UndertaleRoom.GameObject portal = levelselect.AddObjectToLayer(data,"obj_level_select_portal","Goal");
 
-            portal.X = gameobj.X - 120;
-            portal.Y = gameobj.Y - 240;
+            //portal.X = gameobj.X - 120;
+            //portal.Y = gameobj.Y - 240;
 
-            portal.CreationCode = data.CreateCode("gml_ObjectCC_obj_level_select_portal_Create",GMLkvp["gml_ObjectCC_obj_level_select_portal_Create"],0);
+            //portal.CreationCode = data.CreateCode("gml_ObjectCC_obj_level_select_portal_Create",GMLkvp["gml_ObjectCC_obj_level_select_portal_Create"],0);
 
             //BULK REGISTER (your mother)
 
