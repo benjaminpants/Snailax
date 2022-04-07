@@ -17,6 +17,9 @@
     <Reference Include="UndertaleModLib">
       <HintPath>..\Dependencies\UndertaleModLib.dll</HintPath>
     </Reference>
+    <Reference Include="WysApi">
+      <HintPath>..\Dependencies\WysApi.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

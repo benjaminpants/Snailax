@@ -2,6 +2,7 @@
 using UndertaleModLib;
 using UndertaleModLib.Models;
 using System;
+using WysApi.Api;
 using System.IO;
 using UndertaleModLib.Decompiler;
 using System.Reflection;
@@ -60,16 +61,17 @@ namespace Snailax
             return data.CreateScript(name, GMLkvp[key], arguments);
         }
 
-        public void Load(int audioGroup, UndertaleData data, ModMetadata currentMod, IReadOnlyList<ModMetadata> availableDependencies,
-        IEnumerable<ModMetadata> queuedMods)
+        public void Load(int audioGroup, ModData currentMod)
         {
-
-            if (audioGroup != -1) return;
+            UndertaleData data = Patcher.data;
+            if (audioGroup != 0) return;
             GDC = new GlobalDecompileContext(data,false);
             //supress vs being stupid
             #pragma warning disable CS8604
             string gmlfolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),"GMLSource");
             #pragma warning restore CS8604
+
+            
 
             LoadGMLFolder(gmlfolder);
 
@@ -95,14 +97,6 @@ namespace Snailax
             CreateScriptFromKVP(data, "scr_rotate_object", "gml_GlobalScript_scr_rotate_object", 3).Code.LocalsCount = 1;
 
 
-            try
-            {
-
-                data.Code.First(code => code.Name.Content == "gml_Object_obj_epilepsy_warning_Create_0")
-                    .AppendGML("txt_1 = \"Snailax works lol\"", data);
-            }
-            // UndertaleModLib is trying to write profile cache but fails, we don't care
-            catch (Exception) { /* ignored */ }
 
             //Create the level editor object
             UndertaleGameObject level_editor_object = new UndertaleGameObject();
@@ -329,6 +323,17 @@ namespace Snailax
                     code.AppendGMLSafeSN(kvp.Value, data);
                 }
             }
+
+            //create this after the rooms been created so the room is properly defined
+            
+            CreateScriptFromKVP(data, "scr_warp_menu", "gml_GlobalScript_scr_warpmenu", 1);
+
+            Menus.InsertMenuOptionFromEnd(Menus.Vanilla.Extras, 0, new Menus.WysMenuOption("\"Level Editor\"") //visual studio kept screaming at me
+            {
+                script = "scr_warp_menu",
+                tooltipScript = Menus.Vanilla.Tooltips.Text,
+                tooltipArgument = "\"Warp to the level editor\""
+            });
 
 
         }
