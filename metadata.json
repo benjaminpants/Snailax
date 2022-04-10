@@ -9,6 +9,10 @@
             "id": "com.github.cgytrus.gmml.hooker",
             "version": "0.1.0"
         },
+		{
+			"id": "com.github.benjaminpants.wys.tsimphapi",
+			"version": "1.0.0"
+		},
         {
             "id": "com.github.cgytrus.wys.api",
             "version": "0.1.0"

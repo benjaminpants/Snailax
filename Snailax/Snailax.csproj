@@ -11,8 +11,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="GmmlHooker">
+      <HintPath>..\Dependencies\GmmlHooker.dll</HintPath>
+    </Reference>
     <Reference Include="GmmlPatcher">
       <HintPath>..\Dependencies\GmmlPatcher.dll</HintPath>
+    </Reference>
+    <Reference Include="TSIMPH_API">
+      <HintPath>..\Dependencies\TSIMPH_API.dll</HintPath>
     </Reference>
     <Reference Include="UndertaleModLib">
       <HintPath>..\Dependencies\UndertaleModLib.dll</HintPath>
