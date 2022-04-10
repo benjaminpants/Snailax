@@ -34,7 +34,7 @@ namespace Snailax
         {
             UndertaleData data = Patcher.data;
             string soundsfolder = Path.Combine(currentMod.path, "Sounds");
-            Conviences.AddAudioFolder(audioGroup, 1, soundsfolder);
+            Conviences.AddAudioFolder(audioGroup, 2, soundsfolder);
             if (audioGroup != 0) return;
             GDC = new GlobalDecompileContext(data,false);
             //supress vs being stupid
