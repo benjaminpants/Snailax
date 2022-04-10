@@ -33,14 +33,14 @@ namespace Snailax
         public void Load(int audioGroup, ModData currentMod)
         {
             UndertaleData data = Patcher.data;
+            string soundsfolder = Path.Combine(currentMod.path, "Sounds");
+            Conviences.AddAudioFolder(audioGroup, 1, soundsfolder);
             if (audioGroup != 0) return;
             GDC = new GlobalDecompileContext(data,false);
             //supress vs being stupid
-            #pragma warning disable CS8604
-            string gmlfolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),"GMLSource");
-            #pragma warning restore CS8604
+            string gmlfolder = Path.Combine(currentMod.path,"GMLSource");
 
-            
+
 
             LoadGMLFolder(gmlfolder);
 
@@ -107,6 +107,17 @@ namespace Snailax
 
             data.GameObjects.Add(stupid_levelstyler);
 
+            
+            UndertaleGameObject editor_music_obj = new UndertaleGameObject();
+
+            editor_music_obj.Name = data.Strings.MakeString("obj_music_editor");
+
+            editor_music_obj.ParentId = data.GameObjects.ByName("obj_music_parent");
+
+            editor_music_obj.EventHandlerFor(EventType.Other, EventSubtypeOther.User0, data.Strings, data.Code, data.CodeLocals).AppendGMLSafe("play_music = sou_editor_theme");
+
+            data.GameObjects.Add(editor_music_obj);
+
             Logger.Log("Created all objects!");
 
 
@@ -122,7 +133,7 @@ namespace Snailax
 
             newroom.AddObjectToLayer(data, "obj_post_processing_draw", "PostProcessing");
 
-            newroom.AddObjectToLayer(data, "obj_music_main", "FadeOutIn");
+            newroom.AddObjectToLayer(data, "obj_music_editor", "FadeOutIn");
 
             newroom.SetupRoom(false);
 
