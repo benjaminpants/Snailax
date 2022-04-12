@@ -1,1 +1,0 @@
-go_to_room = level_basic_copy_me
