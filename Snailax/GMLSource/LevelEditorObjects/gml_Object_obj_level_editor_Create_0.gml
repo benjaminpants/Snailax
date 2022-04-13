@@ -61,7 +61,6 @@ all_objects_name = ["Wall", "Wall(alt)", "Spike", "Player Spawnpoint", "Conveyer
 
 all_objects_layers = ["Walls","Walls","Spikes","Player","Goal","MiniGames","Player","Player","Player", "MiniGames", "MiniGames", "Spikes", "Traps", "MiniGames", "Walls", "Traps", "Spikes", "Goal", "Walls" , "Traps", "MiniGames", "MiniGames" , "Traps", "Traps", "Spikes", "BackDecoration", "Traps", "Traps", "Traps", "Walls"] //have no idea why conveyer belts are on the goal layer but oh well
 
-
 //DDR
 //darkness
 current_gimmicks = [false,false]

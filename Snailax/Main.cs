@@ -48,6 +48,8 @@ namespace Snailax
 
             LoadGMLFolder(Path.Combine(gmlfolder, "LevelEditorObjects"));
 
+            LoadGMLFolder(Path.Combine(gmlfolder, "LevelEditorObjects", "EditorScripts"));
+
             LoadGMLFolder(Path.Combine(gmlfolder, "CreationCode"));
 
             // create playerspawn before everything else
@@ -78,7 +80,17 @@ namespace Snailax
             //Create the level editor object
             UndertaleGameObject level_editor_object = new UndertaleGameObject();
 
+            data.GameObjects.Add(level_editor_object);
+
             level_editor_object.Name = data.Strings.MakeString("obj_level_editor");
+
+            CreateScriptFromKVP(data, "scr_editor_save", "scr_editor_save", 0).Code.LocalsCount = 1;
+
+            CreateScriptFromKVP(data, "scr_editor_load", "scr_editor_load", 0).Code.LocalsCount = 1;
+
+            CreateScriptFromKVP(data, "scr_editor_play", "scr_editor_play", 0).Code.LocalsCount = 1;
+
+            CreateScriptFromKVP(data, "scr_editor_tile_merge", "scr_editor_tile_merge", 0).Code.LocalsCount = 1;            
 
             level_editor_object.Sprite = data.Sprites.ByName("spr_wall_original");
 
@@ -93,8 +105,6 @@ namespace Snailax
 
             level_editor_object.EventHandlerFor(EventType.Draw, EventSubtypeDraw.DrawGUI, data.Strings, data.Code, data.CodeLocals)
                 .AppendGMLSafe(GMLkvp["gml_Object_obj_level_editor_Draw_64"]);
-
-            data.GameObjects.Add(level_editor_object);
 
             UndertaleGameObject stupid_levelstyler = new UndertaleGameObject();
 
