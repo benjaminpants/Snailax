@@ -15,6 +15,10 @@ var size_y = 1
 while (!has_reached_max_x)
 {
 	attempt_x++
+	if (irandom_range(1,8) == 1)
+	{
+		has_reached_max_x = true
+	}
 	var obj = instance_place(x + (attempt_x * 60),y, object_index)
 	if (obj != noone)
 	{
@@ -39,6 +43,10 @@ while (!has_reached_max_x)
 while (!has_reached_max_y)
 {
 	attempt_y++
+	if (irandom_range(1,8) == 1)
+	{
+		has_reached_max_y = true
+	}
 	var i = 0
 	var mark_for_destruction = []
 	repeat (attempt_x + 1)

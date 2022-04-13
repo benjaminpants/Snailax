@@ -90,7 +90,9 @@ namespace Snailax
 
             CreateScriptFromKVP(data, "scr_editor_play", "scr_editor_play", 0).Code.LocalsCount = 1;
 
-            CreateScriptFromKVP(data, "scr_editor_tile_merge", "scr_editor_tile_merge", 0).Code.LocalsCount = 1;            
+            CreateScriptFromKVP(data, "scr_editor_tile_merge", "scr_editor_tile_merge", 0).Code.LocalsCount = 1;
+
+            CreateScriptFromKVP(data, "scr_editor_get_layer", "scr_editor_get_layer", 1).Code.LocalsCount = 1;
 
             level_editor_object.Sprite = data.Sprites.ByName("spr_wall_original");
 

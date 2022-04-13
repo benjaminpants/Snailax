@@ -98,11 +98,15 @@ if (cur_mode != "placing")
 			}
 			else if (menu_option == 4)
 			{
-				show_message("Not implemented!")
-				//var actstring = "Which mechanic do you want to enable?"
-				//for (var i = 0; i < max_gimmicks; i += 1)
-				//{
-				//}
+				var wants_more_info = show_question("Do you want to see the mechanic ID list first?")
+				if (wants_more_info)
+				{
+					var actstring = "IDS:\n"
+					for (var i = 0; i < max_gimmicks; i += 1)
+					{
+						actstring = actstring + current_gimmicks_names[i] + ":" + string(current_gimmicks[]) + "\n"
+					}
+				}
 			}
 		}
 	}

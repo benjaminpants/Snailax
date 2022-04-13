@@ -62,10 +62,11 @@ all_objects_name = ["Wall", "Wall(alt)", "Spike", "Player Spawnpoint", "Conveyer
 all_objects_layers = ["Walls","Walls","Spikes","Player","Goal","MiniGames","Player","Player","Player", "MiniGames", "MiniGames", "Spikes", "Traps", "MiniGames", "Walls", "Traps", "Spikes", "Goal", "Walls" , "Traps", "MiniGames", "MiniGames" , "Traps", "Traps", "Spikes", "BackDecoration", "Traps", "Traps", "Traps", "Walls"] //have no idea why conveyer belts are on the goal layer but oh well
 
 //DDR
-//darkness
-current_gimmicks = [false,false]
-current_gimmicks_names = ["Arrows", "Darkness"]
-max_gimmicks = array_length_1d(current_gimmicks)
+//DDR(Full Control)
+//DDR(Jump Only)
+//Darkness
+current_gimmicks = [false, false, false, false, false, false, false, false]
+current_gimmicks_names = ["Arrows", "Arrows(+Jumping)", "Arrows(Only Jumping)", "Darkness", "EMPTY SLOT", "EMPTY SLOT", "EMPTY SLOT", "EMPTY SLOT"]
 
 global.current_character = 0 //disable custom characters
 

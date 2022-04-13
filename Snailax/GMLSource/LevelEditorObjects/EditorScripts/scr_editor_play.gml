@@ -167,16 +167,40 @@ else
 	
 	with(obj_wall)
 	{
-		obj_level_editor.wall_instances[array_length_1d(obj_level_editor.wall_instances) + 1] = id
+		if (object_index == obj_wall or object_index == obj_wallB or object_index == obj_wall_brain)
+		{
+			obj_level_editor.wall_instances[array_length_1d(obj_level_editor.wall_instances) + 1] = id
+		}
+	}
+	
+	var tile_merge = 0
+	
+	for (var i = 0; i < array_length_1d(wall_instances); i += 1)
+	{
+		if (instance_exists(wall_instances[i]))
+		{
+			tile_merge++
+			if (tile_merge == 5)
+			{
+				with (wall_instances[i])
+				{
+					scr_editor_tile_merge()
+				}
+				tile_merge = 0
+			}
+		}
 	}
 	
 	for (var i = 0; i < array_length_1d(wall_instances); i += 1)
 	{
 		if (instance_exists(wall_instances[i]))
 		{
-			with (wall_instances[i])
+			if ((wall_instances[i].image_xscale == 1) and (wall_instances[i].image_yscale == 1))
 			{
-				scr_editor_tile_merge()
+				with (wall_instances[i])
+				{
+					scr_editor_tile_merge()
+				}
 			}
 		}
 	}

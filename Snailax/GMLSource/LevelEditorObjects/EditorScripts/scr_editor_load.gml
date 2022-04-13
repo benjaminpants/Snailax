@@ -153,96 +153,22 @@ for (var j = 0; j < array_length_1d(level_data); j += 1)
 		k++
 	}
 	
-	if (name == "obj_playerspawn")
-	{
-		layer_to_place_on = "Player"
-	}
-	else if (name == "obj_rusty_spike" or name == "obj_spike_permanent")
+	if (name == "obj_rusty_spike")
 	{
 		name = "obj_spike_permanent"
-		layer_to_place_on = "Spikes"
 	}
-	else if (name == "obj_conveyor_belt")
+	layer_to_place_on = scr_editor_get_layer(name)
+	
+	if (name == "obj_squasher")
 	{
-		layer_to_place_on = "Goal"
-	}
-	else if (name == "obj_bomb_spawner")
-	{
-		layer_to_place_on = "MiniGames"
-	}
-	else if (name == "obj_sh_gun")
-	{
-		layer_to_place_on = "Player"
-	}
-	else if (name == "obj_sh_gun2")
-	{
-		layer_to_place_on = "Player"
-	}
-	else if (name == "obj_sh_gun3")
-	{
-		layer_to_place_on = "Player"
-	}
-	else if (name == "obj_destructable_wall")
-	{
-		layer_to_place_on = "MiniGames"
-	}
-	else if (name == "obj_gun")
-	{
-		layer_to_place_on = "Spikes"
-	}
-	else if (name == "obj_enemy")
-	{
-		layer_to_place_on = "Traps"
-	}
-	else if (name == "obj_bubble")
-	{
-		layer_to_place_on = "MiniGames"
-	}
-	else if (name == "obj_drone_spawner")
-	{
-		layer_to_place_on = "Traps"
-	}
-	else if (name == "obj_sh_enemy_spawnpoint_normy")
-	{
-		layer_to_place_on = "Spikes"
-	}
-	else if (name == "obj_exploration_point")
-	{
-		layer_to_place_on = "Goal"
-	}
-	else if (name == "obj_protector")
-	{
-		layer_to_place_on = "Traps"
-	}
-	else if (name == "obj_ice_spike")
-	{
-		layer_to_place_on = "Traps"
-	}
-	else if (name == "obj_uplifter")
-	{
-		layer_to_place_on = "MiniGames"
-	}
-	else if (name == "obj_speedbooster")
-	{
-		layer_to_place_on = "MiniGames"
-	}
-	else if (name == "obj_evil_snail")
-	{
-		layer_to_place_on = "Traps"
-	}
-	else if (name == "obj_squasher")
-	{
-		layer_to_place_on = "Spikes"
 		parse_rot = true
 	}
 	else if (name == "obj_underwater_current")
 	{
-		layer_to_place_on = "BackDecoration"
 		parse_rot = true
 	}
 	else if (name == "obj_fish")
 	{
-		layer_to_place_on = "Traps"
 		parse_rot = true
 	}
 	k++
