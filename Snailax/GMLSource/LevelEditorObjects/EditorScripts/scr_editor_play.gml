@@ -162,52 +162,51 @@ else
 	{
 		SQUIDGAMES.setting_calculate_frames_ahead += 10
 	}
+
+	image_index = obj_wall
 	
-	wall_instances = []
+	walls_to_merge = []
 	
-	with(obj_wall)
+	for (var i = 0; i < (ceil(room_width / 60) + 1); i += 1)
 	{
-		if (object_index == obj_wall or object_index == obj_wallB or object_index == obj_wall_brain)
+		for (var j = 0; j < (ceil(room_height / 60) + 1); j += 1)
 		{
-			obj_level_editor.wall_instances[array_length_1d(obj_level_editor.wall_instances) + 1] = id
-		}
-	}
-	
-	var tile_merge = 0
-	
-	for (var i = 0; i < array_length_1d(wall_instances); i += 1)
-	{
-		if (instance_exists(wall_instances[i]))
-		{
-			tile_merge++
-			if (tile_merge == 5)
+			var obj = instance_place((i * 60),(j * 60), obj_wall)
+			if (obj != noone)
 			{
-				with (wall_instances[i])
+				with (obj)
 				{
-					scr_editor_tile_merge()
-				}
-				tile_merge = 0
-			}
-		}
-	}
-	
-	for (var i = 0; i < array_length_1d(wall_instances); i += 1)
-	{
-		if (instance_exists(wall_instances[i]))
-		{
-			if ((wall_instances[i].image_xscale == 1) and (wall_instances[i].image_yscale == 1))
-			{
-				with (wall_instances[i])
-				{
-					scr_editor_tile_merge()
+					if (object_index == obj_wall or object_index == obj_wallB or object_index == obj_wall_brain)
+					{
+						obj_level_editor.walls_to_merge[array_length_1d(obj_level_editor.walls_to_merge)] = id
+					}
 				}
 			}
 		}
 	}
 	
-	wall_instances = []
+	for (var i = 0; i < array_length_1d(walls_to_merge); i += 1)
+	{
+		with (walls_to_merge[i])
+		{
+			scr_editor_tile_merge()
+		}
+	}
+	
+	walls_to_merge = []
 	
 	instance_destroy(obj_playerspawn)
+	if (current_gimmicks[0] != 0)
+	{
+		var mini = instance_create_layer(0,0,"Minigames",obj_d_main)
+		mini.interval = current_gimmicks[0]
+	}
+	
+	if (current_gimmicks[1])
+	{
+		instance_create_layer(0,0,"Player",obj_dark_level)
+	}
+	
 	instance_destroy()
 }
 return true

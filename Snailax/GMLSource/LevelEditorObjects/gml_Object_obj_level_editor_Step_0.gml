@@ -98,15 +98,27 @@ if (cur_mode != "placing")
 			}
 			else if (menu_option == 4)
 			{
-				var wants_more_info = show_question("Do you want to see the mechanic ID list first?")
+				var wants_more_info = show_question("Do you want to see the mechanic ID list(and which ones are enabled) first?")
 				if (wants_more_info)
 				{
 					var actstring = "IDS:\n"
 					for (var i = 0; i < max_gimmicks; i += 1)
 					{
-						actstring = actstring + current_gimmicks_names[i] + ":" + string(current_gimmicks[]) + "\n"
+						actstring = actstring + current_gimmicks_names[i] + ":" + string(current_gimmicks[i]) + "\n"
 					}
+					show_message(actstring)
 				}
+				var to_toggle = get_integer("Which mechanic do you want to toggle?", 0)
+				if (to_toggle != 0)
+				{
+					current_gimmicks[to_toggle] = !current_gimmicks[to_toggle]
+				}
+				else
+				{
+					var val = get_integer("This mechanic has a variable to customize. (0=Disabled)\nInterval is how often arrows show up", current_gimmicks[to_toggle])
+					current_gimmicks[to_toggle] = val
+				}
+				show_message(current_gimmicks_names[to_toggle] + " is now:" + string(current_gimmicks[to_toggle]))
 			}
 		}
 	}

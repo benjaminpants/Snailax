@@ -67,7 +67,7 @@ while (!file_text_eof(file))
 
 var level_version = real(header_data[0])
 
-if (level_version > 4)
+if (level_version > 5)
 {
 	show_message("This format is for a future version! Expect weird issues when loading and be sure to check the github for future versions!")
 }
@@ -121,6 +121,28 @@ else
 {
 	current_song = real(header_data[13])
 	current_theme = real(header_data[14])
+}
+if (level_version == 4)
+{
+	current_gimmicks = [0, false]
+	level_version = 5
+}
+else
+{
+	var k = 1
+	var current_gimmick_index = 0
+	while (string_char_at(header_data[15],k) != "|")
+	{
+		var gim = ""
+		while (string_char_at(header_data[15],k) != ",")
+		{
+			gim = gim + string_char_at(header_data[15],k)
+			k++
+		}
+		current_gimmicks[current_gimmick_index] = real(gim)
+		k++
+		current_gimmick_index++
+	}
 }
 
 room_width = 1920 * room_mult_x

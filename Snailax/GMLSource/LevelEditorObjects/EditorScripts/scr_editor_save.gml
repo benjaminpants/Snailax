@@ -26,7 +26,7 @@ if (show_question("Do you want to change squid's settings?(These default to squi
 	squid_conveyor_belt_change_probability = get_integer("Conveyer Belt Change Probability(0-100)", squid_conveyor_belt_change_probability * 100) / 100
 	squid_laser_probability = get_integer("Laser Probablity(0-100)", squid_laser_probability * 100) / 100
 }
-var SaveData = "4\n" //file version
+var SaveData = "5\n" //file version
 
 SaveData = SaveData + string(squid_ground_spike_probability) + "\n"
 SaveData = SaveData + string(squid_wall_spike_probability) + "\n"
@@ -45,6 +45,13 @@ SaveData = SaveData + string(room_mult_y) + "\n"
 SaveData = SaveData + string(current_song) + "\n"
 
 SaveData = SaveData + string(current_theme) + "\n"
+
+for (var i = 0; i < max_gimmicks; i += 1)
+{
+	SaveData = SaveData + string(current_gimmicks[i]) + ","
+}
+
+SaveData = SaveData + "|\n"
 
 SaveData = SaveData + "-\n"
 
