@@ -27,14 +27,13 @@ namespace Snailax
 
         public static UndertaleScript CreateScriptFromKVP(UndertaleData data, string name, string key, ushort arguments)
         {
-            return Hooker.CreateLegacyScript(name, GMLkvp[key], arguments);
+            return data.CreateLegacyScript(name, GMLkvp[key], arguments);
         }
 
-        public void Load(int audioGroup, ModData currentMod)
+        public void Load(int audioGroup, UndertaleData data, ModData currentMod)
         {
-            UndertaleData data = Patcher.data;
             string soundsfolder = Path.Combine(currentMod.path, "Sounds");
-            Conviences.AddAudioFolder(audioGroup, 2, soundsfolder);
+            Conviences.AddAudioFolder(audioGroup, 2, soundsfolder, data);
             if (audioGroup != 0) return;
             GDC = new GlobalDecompileContext(data,false);
             //supress vs being stupid
@@ -95,18 +94,18 @@ namespace Snailax
             CreateScriptFromKVP(data, "scr_editor_get_layer", "scr_editor_get_layer", 1).Code.LocalsCount = 1;
 
             level_editor_object.Sprite = data.Sprites.ByName("spr_wall_original");
-
+            
             level_editor_object.EventHandlerFor(EventType.Create, data.Strings, data.Code, data.CodeLocals)
-                .AppendGMLSafe(GMLkvp["gml_Object_obj_level_editor_Create_0"]);
+                .AppendGmlSafe(GMLkvp["gml_Object_obj_level_editor_Create_0"], data);
 
             level_editor_object.EventHandlerFor(EventType.Step, EventSubtypeStep.Step, data.Strings, data.Code, data.CodeLocals)
-                .AppendGMLSafe(GMLkvp["gml_Object_obj_level_editor_Step_0"]);
+                .AppendGmlSafe(GMLkvp["gml_Object_obj_level_editor_Step_0"], data);
 
             level_editor_object.EventHandlerFor(EventType.Draw, EventSubtypeDraw.Draw, data.Strings, data.Code, data.CodeLocals)
-                .AppendGMLSafe(GMLkvp["gml_Object_obj_level_editor_Draw_0"]);
+                .AppendGmlSafe(GMLkvp["gml_Object_obj_level_editor_Draw_0"], data);
 
             level_editor_object.EventHandlerFor(EventType.Draw, EventSubtypeDraw.DrawGUI, data.Strings, data.Code, data.CodeLocals)
-                .AppendGMLSafe(GMLkvp["gml_Object_obj_level_editor_Draw_64"]);
+                .AppendGmlSafe(GMLkvp["gml_Object_obj_level_editor_Draw_64"], data);
 
             UndertaleGameObject stupid_levelstyler = new UndertaleGameObject();
 
@@ -115,7 +114,7 @@ namespace Snailax
             stupid_levelstyler.ParentId = data.GameObjects.ByName("obj_levelstyler");
 
             stupid_levelstyler.EventHandlerFor(EventType.Create, data.Strings, data.Code, data.CodeLocals)
-                .AppendGMLSafe(GMLkvp["gml_Object_obj_i_hate_levelstylers_Create_0"]);
+                .AppendGmlSafe(GMLkvp["gml_Object_obj_i_hate_levelstylers_Create_0"], data);
 
             data.GameObjects.Add(stupid_levelstyler);
 
@@ -126,7 +125,7 @@ namespace Snailax
 
             editor_music_obj.ParentId = data.GameObjects.ByName("obj_music_parent");
 
-            editor_music_obj.EventHandlerFor(EventType.Other, EventSubtypeOther.User0, data.Strings, data.Code, data.CodeLocals).AppendGMLSafe("play_music = sou_editor_theme");
+            editor_music_obj.EventHandlerFor(EventType.Other, EventSubtypeOther.User0, data.Strings, data.Code, data.CodeLocals).AppendGmlSafe("play_music = sou_editor_theme", data);
 
             data.GameObjects.Add(editor_music_obj);
 
@@ -135,7 +134,7 @@ namespace Snailax
 
             // copy the room of funny and create the editor room
 
-            UndertaleRoom newroom = Conviences.CreateBlankLevelRoom("snailax_editor_room");
+            UndertaleRoom newroom = Conviences.CreateBlankLevelRoom("snailax_editor_room", data);
 
             newroom.SetupRoom(false);
 
@@ -182,9 +181,9 @@ namespace Snailax
 
             Dictionary<string, string> AppendScripts = GMLKVP.DictionarizeGMLFolder(Path.Combine(gmlfolder, "AppendScripts"));
 
-            data.GameObjects.ByName("obj_squasher").EventHandlerFor(EventType.Alarm, (uint)4, data.Strings,data.Code,data.CodeLocals).AppendGMLSafe(GMLkvp["gml_Object_obj_squasher_Alarm_4"]);
+            data.GameObjects.ByName("obj_squasher").EventHandlerFor(EventType.Alarm, (uint)4, data.Strings,data.Code,data.CodeLocals).AppendGmlSafe(GMLkvp["gml_Object_obj_squasher_Alarm_4"], data);
 
-            data.GameObjects.ByName("obj_wall_walkthrough").EventHandlerFor(EventType.Draw, EventSubtypeDraw.Draw, data.Strings, data.Code, data.CodeLocals).AppendGMLSafe(GMLkvp["gml_Object_obj_wall_walkthrough_Draw_0"]);
+            data.GameObjects.ByName("obj_wall_walkthrough").EventHandlerFor(EventType.Draw, EventSubtypeDraw.Draw, data.Strings, data.Code, data.CodeLocals).AppendGmlSafe(GMLkvp["gml_Object_obj_wall_walkthrough_Draw_0"], data);
 
 
             foreach (KeyValuePair<string, string> kvp in OverrideScripts)
@@ -205,12 +204,7 @@ namespace Snailax
                 UndertaleCode code = data.Code.First(c => c.Name.Content == kvp.Key);
                 if (code != null)
                 {
-                    string newcode = kvp.Value + "\n" + code.DecompileGML();
-                    try
-                    {
-                        code.ReplaceGML(newcode, data);
-                    }
-                    catch (Exception) {/* die */}
+                    Conviences.PrependCode(kvp.Key, kvp.Value, data);
                 }
             }
 
@@ -219,15 +213,15 @@ namespace Snailax
                 UndertaleCode code = data.Code.First(c => c.Name.Content == kvp.Key);
                 if (code != null)
                 {
-                    code.AppendGMLSafe(kvp.Value);
+                    code.AppendGmlSafe(kvp.Value, data);
                 }
             }
-
+            
             //create this after the rooms been created so the room is properly defined
             
             CreateScriptFromKVP(data, "scr_warp_menu", "gml_GlobalScript_scr_warpmenu", 1);
 
-            Menus.InsertMenuOptionFromEnd(Menus.Vanilla.Extras, 0, new Menus.WysMenuOption("\"Level Editor\"") //visual studio kept screaming at me
+            Menus.InsertMenuOptionFromEnd(data, Menus.Vanilla.Extras, 0, new Menus.WysMenuOption("\"Level Editor\"") //visual studio kept screaming at me
             {
                 script = "scr_warp_menu",
                 tooltipScript = Menus.Vanilla.Tooltips.Text,

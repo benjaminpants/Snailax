@@ -14,6 +14,38 @@ else
 	
 	being_destroyed = true
 	
+	image_index = obj_wall
+	
+	walls_to_merge = []
+	
+	for (var i = 0; i < (ceil(room_width / 60) + 1); i += 1)
+	{
+		for (var j = 0; j < (ceil(room_height / 60) + 1); j += 1)
+		{
+			var obj = instance_place((i * 60),(j * 60), obj_wall)
+			if (obj != noone)
+			{
+				with (obj)
+				{
+					if (object_index == obj_wall or object_index == obj_wallB or object_index == obj_wall_brain)
+					{
+						obj_level_editor.walls_to_merge[array_length_1d(obj_level_editor.walls_to_merge)] = id
+					}
+				}
+			}
+		}
+	}
+	
+	for (var i = 0; i < array_length_1d(walls_to_merge); i += 1)
+	{
+		with (walls_to_merge[i])
+		{
+			scr_editor_tile_merge()
+		}
+	}
+	
+	walls_to_merge = []
+	
 	//destroy the current level styler
 	instance_destroy(obj_levelstyler)
 	//forcefully clear all the walllines
@@ -163,37 +195,6 @@ else
 		SQUIDGAMES.setting_calculate_frames_ahead += 10
 	}
 
-	image_index = obj_wall
-	
-	walls_to_merge = []
-	
-	for (var i = 0; i < (ceil(room_width / 60) + 1); i += 1)
-	{
-		for (var j = 0; j < (ceil(room_height / 60) + 1); j += 1)
-		{
-			var obj = instance_place((i * 60),(j * 60), obj_wall)
-			if (obj != noone)
-			{
-				with (obj)
-				{
-					if (object_index == obj_wall or object_index == obj_wallB or object_index == obj_wall_brain)
-					{
-						obj_level_editor.walls_to_merge[array_length_1d(obj_level_editor.walls_to_merge)] = id
-					}
-				}
-			}
-		}
-	}
-	
-	for (var i = 0; i < array_length_1d(walls_to_merge); i += 1)
-	{
-		with (walls_to_merge[i])
-		{
-			scr_editor_tile_merge()
-		}
-	}
-	
-	walls_to_merge = []
 	
 	instance_destroy(obj_playerspawn)
 	if (current_gimmicks[0] != 0)
