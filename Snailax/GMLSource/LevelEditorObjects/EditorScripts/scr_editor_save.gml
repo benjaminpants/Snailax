@@ -78,9 +78,19 @@ for (var i = 0; i < array_length_1d(all_objects); i += 1)
 		
 		SaveData = SaveData + "," + string(y) + ","
 		
-		if (object_index == obj_squasher or object_index == obj_underwater_current or object_index == obj_fish)
+		if (object_index == obj_squasher or object_index == obj_underwater_current or object_index == obj_fish or object_index == obj_door)
 		{
 			SaveData = SaveData + string(image_angle) + ","
+		}
+		
+		if (object_index == obj_door)
+		{
+			SaveData = SaveData + string(image_yscale) + ","
+		}
+		
+		if (object_index == obj_antenna or (object_get_parent(object_index) == obj_antenna))
+		{
+			SaveData = SaveData + string(corrupted) + ","
 		}
 		
 		SaveData = SaveData + "\n"

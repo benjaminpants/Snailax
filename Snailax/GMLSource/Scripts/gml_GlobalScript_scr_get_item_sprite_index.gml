@@ -1,3 +1,8 @@
+if (argument0 == spr_power_antenna or argument0 == spr_power_antenna_big_range or argument0 == spr_power_generator or argument0 == spr_power_generator_far or argument0 == spr_floaty_antenna)
+{
+	return [0,argument0,0.5]
+}
+
 if (argument0 == spr_snail_house_gun or argument0 == spr_snail_house_gun2 or argument0 == spr_snail_house_gun3 or argument0 == spr_snail_house_gun4)
 {
 	return [2,argument0,1]

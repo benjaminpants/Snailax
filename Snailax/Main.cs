@@ -181,6 +181,8 @@ namespace Snailax
 
             Dictionary<string, string> AppendScripts = GMLKVP.DictionarizeGMLFolder(Path.Combine(gmlfolder, "AppendScripts"));
 
+            Dictionary<string, string> HookScripts = GMLKVP.DictionarizeGMLFolder(Path.Combine(gmlfolder, "Hooks"));
+
             data.GameObjects.ByName("obj_squasher").EventHandlerFor(EventType.Alarm, (uint)4, data.Strings,data.Code,data.CodeLocals).AppendGmlSafe(GMLkvp["gml_Object_obj_squasher_Alarm_4"], data);
 
             data.GameObjects.ByName("obj_wall_walkthrough").EventHandlerFor(EventType.Draw, EventSubtypeDraw.Draw, data.Strings, data.Code, data.CodeLocals).AppendGmlSafe(GMLkvp["gml_Object_obj_wall_walkthrough_Draw_0"], data);
@@ -217,8 +219,14 @@ namespace Snailax
                 }
             }
             
+
+            foreach (KeyValuePair<string, string> kvp in HookScripts)
+            {
+                data.HookCode(kvp.Key, kvp.Value);
+            }
+
             //create this after the rooms been created so the room is properly defined
-            
+
             CreateScriptFromKVP(data, "scr_warp_menu", "gml_GlobalScript_scr_warpmenu", 1);
 
             Menus.InsertMenuOptionFromEnd(data, Menus.Vanilla.Extras, 0, new Menus.WysMenuOption("\"Level Editor\"") //visual studio kept screaming at me

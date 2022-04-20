@@ -134,6 +134,17 @@ if (keyboard_check_pressed(ord("E")))
 	{
 		placing_rotation += 90 //this used to be 30 but squasher collisions dont like being offgrid or not being perfect 90 degree angles :(
 	}
+	if (placing == obj_door)
+	{
+		if (placing_rotation == 0)
+		{
+			placing_rotation = 90
+		}
+		else
+		{
+			placing_rotation = 0
+		}
+	}
 	if (placing == obj_underwater_current)
 	{
 		placing_rotation += 30 
@@ -141,6 +152,23 @@ if (keyboard_check_pressed(ord("E")))
 	if (placing_rotation >= 360)
 	{
 		placing_rotation = 0
+	}
+}
+
+if (placing == obj_door and placing_rotation == 90)
+{
+	offset_y += 60
+}
+
+if (keyboard_check_pressed(ord("C")))
+{
+	if (placing == obj_door)
+	{
+		placing_size += 1
+		if (placing_size == 6)
+		{
+			placing_size = 1
+		}
 	}
 }
 
@@ -184,6 +212,22 @@ if (mouse_check_button(mb_left) and (x != prev_x or y != prev_y))
 	prev_y = y
 	var inst = instance_create_layer(x + offset_x, y + offset_y, placing_layer, placing)
 	inst.image_angle = placing_rotation
+	if (placing == obj_antenna or (object_get_parent(placing) == obj_antenna))
+	{
+		inst.corrupted = keyboard_check(ord("Q"))
+		with (obj_door)
+		{
+			connected_to = -1
+			alarm[1] = 1
+		}
+	}
+	if (placing == obj_door)
+	{
+		inst.yoff = 0
+		inst.xoff = 0
+		inst.yscale = placing_size
+	}
+	inst.image_yscale = placing_size
 	audio_play_sound(sou_increaseHandicapA,0,false)
 	level_saved = false
 }
@@ -217,6 +261,7 @@ for (var i = 0; i < 9; i++)
 			placing = global.current_palette[i]
 			placing_layer = global.current_palette_layers[i]
 			placing_rotation = 0
+			placing_size = 1
 		}
 	}
 }

@@ -165,9 +165,13 @@ for (var j = 0; j < array_length_1d(level_data); j += 1)
 	
 	var y_pos = ""
 	
-	var p_rotation = ""
+	var p_bonus = ""
 	
-	var parse_rot = false
+	var parse_size = false
+	
+	var size_to_set = ""
+	
+	var parse_bonus_val = ""
 	
 	while (string_char_at(data,k) != ":")
 	{
@@ -183,16 +187,39 @@ for (var j = 0; j < array_length_1d(level_data); j += 1)
 	
 	if (name == "obj_squasher")
 	{
-		parse_rot = true
+		parse_bonus_val = "rot"
 	}
 	else if (name == "obj_underwater_current")
 	{
-		parse_rot = true
+		parse_bonus_val = "rot"
 	}
 	else if (name == "obj_fish")
 	{
-		parse_rot = true
+		parse_bonus_val = "rot"
 	}
+	else if (name == "obj_door")
+	{
+		parse_bonus_val = "rot"
+	}
+	
+	if (name == "obj_antenna")
+	{
+		parse_bonus_val = "cor"
+	}
+	else if (name == "obj_power_generator")
+	{
+		parse_bonus_val = "cor"
+	}
+	else if (name == "obj_antenna_big_range")
+	{
+		parse_bonus_val = "cor"
+	}
+	
+	if (name == "obj_door")
+	{
+		parse_size	= true
+	}
+	
 	k++
 	
 	while (string_char_at(data,k) != ",")
@@ -213,24 +240,55 @@ for (var j = 0; j < array_length_1d(level_data); j += 1)
 	
 	y_pos = real(y_pos)
 	
-	if (parse_rot)
+	if (parse_bonus_val != "")
 	{
 		k++
 		
 		while (string_char_at(data,k) != ",")
 		{
-			p_rotation = p_rotation + string_char_at(data,k)
+			p_bonus = p_bonus + string_char_at(data,k)
 			k++
 		}
-		p_rotation = real(p_rotation)
+		p_bonus = real(p_bonus)
 	}
 	else
 	{
-		p_rotation = 0
+		p_bonus = 0
 	}
+	//parse size
+	if (parse_size)
+	{
+		k++
+		
+		while (string_char_at(data,k) != ",")
+		{
+			size_to_set = size_to_set + string_char_at(data,k)
+			k++
+		}
+		size_to_set = real(size_to_set)
+	}
+	else
+	{
+		size_to_set = 1
+	}
+	
 			
 	var new_object = instance_create_layer(x_pos, y_pos, layer_to_place_on, asset_get_index(name))
-	new_object.image_angle = p_rotation
+	if (name == "obj_door")
+	{
+		new_object.yoff = 0
+		new_object.xoff = 0
+		new_object.yscale = size_to_set
+	}
+	new_object.image_yscale = size_to_set
+	if (parse_bonus_val == "rot")
+	{
+		new_object.image_angle = p_bonus
+	}
+	if (parse_bonus_val == "cor")
+	{
+		new_object.corrupted = p_bonus
+	}
 	
 	
 }

@@ -208,6 +208,17 @@ else
 		instance_create_layer(0,0,"Player",obj_dark_level)
 	}
 	
+	with (obj_antenna)
+	{
+		event_user(0)
+	}
+	
+	with (obj_door)
+	{
+		connected_to = -1
+		alarm[1] = 1
+	}
+	
 	instance_destroy()
 }
 return true

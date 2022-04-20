@@ -12,6 +12,16 @@ if (cur_mode == "placing")
 		draw_set_halign(fa_left)
 		draw_text_ext_transformed(0,64,"Press E to rotate, Q to slightly rotate\nRotation:" + string(placing_rotation),60,4920,0.6,0.6,0)
 	}
+	if (placing == obj_door)
+	{
+		draw_set_halign(fa_left)
+		draw_text_ext_transformed(0,64,"Press C to increase size:" + string(placing_size) + "Press E to rotate:" + string(placing_rotation),60,4920,0.6,0.6,0)
+	}
+	if (placing == obj_antenna or (object_get_parent(placing) == obj_antenna))
+	{
+		draw_set_halign(fa_left)
+		draw_text_ext_transformed(0,64,"Hold Q when placing to place corrupted",60,4920,0.6,0.6,0)
+	}
 	if (keyboard_check(vk_f9))
 	{
 		scr_draw_subtitle("F1 to play, F2 to save, F3 to load, F4 quick play, F2 ingame returns you to the editor", c_white)
@@ -88,8 +98,9 @@ else
 	
 	
 	
-	//draw the very basic mouse cursor, this appears on all non-building mode areas
-	var mx = (window_mouse_get_x()/window_get_width()) * display_get_gui_width()
-	var my = (window_mouse_get_y()/window_get_height()) * display_get_gui_height()
-	draw_sprite_ext(spr_arrow_button_tip, 0, mx + 10, my + 10, 0.5,0.5, 140, c_white, 1)
+
 }
+//draw the very basic mouse cursor, this appears on all modes
+var mx = (window_mouse_get_x()/window_get_width()) * display_get_gui_width()
+var my = (window_mouse_get_y()/window_get_height()) * display_get_gui_height()
+draw_sprite_ext(spr_arrow_button_tip, 0, mx + 10, my + 10, 0.5,0.5, 140, c_white, 1)
